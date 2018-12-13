@@ -1,6 +1,11 @@
 <?php
-
-// src/AppBundle/EventListener/RequestListener.php
+/**
+ * EventListener 
+ *
+ * @author Saswati
+ *
+ * @category EventListener
+ */
 namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

@@ -1,3 +1,10 @@
+
+# /**.
+#  * messages for error and success 
+#  * @author Saswati
+#  *
+#  * @category messages.en.yml
+#  */
 api.missing_parameters: 'Some parameters are missing. Please provide the required parameter.'
 api.missing_username: 'Please provide the username.'
 api.missing_phone: 'Please provide the phone parameter.'

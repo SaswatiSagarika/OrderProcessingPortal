@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for Users Section.
+ * Controller for product Section.
  *
  * @author Saswati
  *
@@ -66,7 +66,7 @@ class ProductController extends FOSRestController
 	public function getProductDetailAction(Request $request) 
     {
         try {
-            
+
             $demo = json_decode($request->getContent(), true);
             // if content is not provided.
             if (!$demo) {

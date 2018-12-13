@@ -1,8 +1,10 @@
 <?php
 
 /**
- * Description of SplitCSVService
- *
+ * Description of upload service  to upload data
+ * @author Saswati
+ * 
+ * @category Service
  *
  */
 namespace AppBundle\Service;
@@ -132,8 +134,8 @@ class UploadService
             $returnData['errorMessage'] = $e->getMessage();
            
         }
-
-        return "uploaded";
+        $returnData['sucuess'] = "accounts uploaded";
+        return $returnData;
     }
 
     /**
@@ -217,8 +219,8 @@ class UploadService
             $returnData['errorMessage'] = $e->getMessage();
            
         }
-
-        return "uploaded";
+        $returnData['sucuess'] = "items uploaded";
+        return $returnData;
     }
 
    /**
@@ -310,7 +312,7 @@ class UploadService
             $returnData['errorMessage'] = $e->getMessage();
             
         }
-            $returnData['sucuess'] = "vendors uploaded";
+        $returnData['sucuess'] = "vendors uploaded";
         return $returnData;
     }
 
@@ -437,10 +439,7 @@ class UploadService
                     break;     
                 default:
                     $returnData = 'not valid case';
-                    break;           
-                default:
-                    $returnData = 'not valid case';
-                    break;
+                    break; 
             }
             $em->flush();   
         } catch (\Exception $e) {

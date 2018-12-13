@@ -1,6 +1,6 @@
 <?php
 /**
- * Controller for Default apitesting functions.
+ * Controller for apitesting functions.
  *
  * @author Saswati
  *

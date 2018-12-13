@@ -2,6 +2,9 @@
 
 /**
  * File for Error code,severity and error message management.
+ * @author Saswati
+ *
+ * @category Constants
  */
 namespace AppBundle\Constants;
 

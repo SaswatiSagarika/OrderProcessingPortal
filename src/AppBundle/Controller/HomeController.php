@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Controller for home product ui functions.
+ *
+ * @author Saswati
+ *
+ * @category Controller
+ */
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
