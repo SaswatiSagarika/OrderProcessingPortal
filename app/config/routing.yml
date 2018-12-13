@@ -1,0 +1,7 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+# app/config/routing.yml
+# _translation_edit_in_place:
+#     resource: '@TranslationBundle/Resources/config/routing_edit_in_place.yml'
+#     prefix:  /admin

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+ {% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
+ {% endblock %}
+{% block body %}
+
+    <div class="row">
+        {% for image in images %}
+        <div class="col-sm-4 col-md-3">
+            <div class="thumbnail">
+              <div class="caption text-center" onclick="location.href='https://flow.microsoft.com/en-us/connectors/shared_slack/slack/'">
+                <div class="position-relative">
+                  <a href="#" class="">
+                    <img src="/images/{{ image }}" alt="...">
+                </a>
+                </div>               
+              </div>
+              <div class="caption card-footer text-center">
+                <button type="button" class="btn btn-danger btn-block">Buy Now<span class="glyphicon glyphicon-download-alt"> </button>
+                <button type="button" class="btn btn-warning btn-block">Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></button>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

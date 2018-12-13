@@ -1,0 +1,17 @@
+#MyBundle\Resources\translations\messages.en.yml
+# /**.
+#  * messages for error and success 
+#  * @author Saswati
+#  *
+#  * @category messages.en.yml
+#  */
+api:
+    token: Missing parameter token.
+    activation_key: Missing parameter 'activation key!'
+    dummy: Missing parameter 'dummy!'
+    invalid_token: Token parameter is not valid!
+    invalid_method: Method parameter is not valid!
+    empty: Couldn't get reocrds for the given filters!
+    invalid_json: Invalid JSON
+    invalid_content_type: Invalid Content type
+    invalid_authorization: Invalid Authorization.
