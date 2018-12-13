@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Status
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

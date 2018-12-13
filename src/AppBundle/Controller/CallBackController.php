@@ -40,7 +40,13 @@ class CallBackController extends Controller
 
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $data = $request->server->get('QUERY_STRING');
-        print_r($data);exit();
+        $parseUrl = $this->container
+                ->get('app.service.default')
+                ->parseAuthRedirectUrl($data);
+
+        $accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
+        $dataService->updateOAuth2Token($accessToken);
+        
         
         
     }

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Account
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -193,7 +199,7 @@ class Account
      *
      * @return Account
      */
-    public function setAccountType($accountType)
+    public function setAccountType(\AppBundle\Entity\AccountType  $accountType)
     {
         $this->accountType = $accountType;
 
@@ -287,7 +293,7 @@ class Account
      *
      * @return Account
      */
-    public function setCurrency($currency)
+    public function setCurrency(\AppBundle\Entity\CompanyCurrency $currency)
     {
         $this->currency = $currency;
 
@@ -311,7 +317,7 @@ class Account
      *
      * @return Account
      */
-    public function setTaxCode($taxCode)
+    public function setTaxCode(\AppBundle\Entity\TaxCode $taxCode)
     {
         $this->taxCode = $taxCode;
 
@@ -335,7 +341,7 @@ class Account
      *
      * @return Account
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -359,7 +365,7 @@ class Account
      *
      * @return Account
      */
-    public function setSubAccount($subAccount)
+    public function setSubAccount(\AppBundle\Entity\SubAccountType $subAccount)
     {
         $this->subAccount = $subAccount;
 
@@ -383,7 +389,7 @@ class Account
      *
      * @return Account
      */
-    public function setClassification($classification)
+    public function setClassification(\AppBundle\Entity\Classification $classification)
     {
         $this->classification = $classification;
 

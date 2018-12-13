@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * POItems
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -125,11 +131,11 @@ class POItems
     /**
      * Set item
      *
-     * @param integer $item
+     * @param \AppBundle\Entity\Item $item
      *
      * @return POItems
      */
-    public function setItem($item)
+    public function setItem(\AppBundle\Entity\Item $item)
     {
         $this->item = $item;
 
@@ -139,7 +145,7 @@ class POItems
     /**
      * Get item
      *
-     * @return int
+     * @return \AppBundle\Entity\Item
      */
     public function getItemId()
     {
@@ -173,11 +179,11 @@ class POItems
     /**
      * Set taxCode
      *
-     * @param integer $taxCode
+     * @param \AppBundle\Entity\TaxCode $taxCode
      *
      * @return POItems
      */
-    public function setTaxCode($taxCode)
+    public function setTaxCode(\AppBundle\Entity\TaxCode$taxCode)
     {
         $this->taxCode = $taxCode;
 
@@ -187,7 +193,7 @@ class POItems
     /**
      * Get taxCode
      *
-     * @return int
+     * @return \AppBundle\Entity\TaxCode
      */
     public function getTaxCode()
     {
@@ -221,11 +227,11 @@ class POItems
     /**
      * Set status
      *
-     * @param string $status
+     * @param \AppBundle\Entity\Status $status
      *
      * @return POItems
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -235,7 +241,7 @@ class POItems
     /**
      * Get status
      *
-     * @return string
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {

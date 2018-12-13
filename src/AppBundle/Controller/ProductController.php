@@ -92,8 +92,6 @@ class ProductController extends FOSRestController
 
             $resultArray['success'] = $resultArr;
 
-        } catch (NotFoundHttpException $e) {
-            $resultArray['error'] = $e->getMessage();
         } catch (Exception $e) {
             $resultArray['error'] = $e->getMessage();
         }

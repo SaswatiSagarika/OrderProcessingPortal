@@ -28,7 +28,8 @@ class ApiTestController extends Controller
      * @Route("/api/testform", name="form")
      *
      * @param $request
-     * @return array
+     *
+     * @return $response
      */
     public function indexAction (Request $request)
     {	
@@ -46,10 +47,8 @@ class ApiTestController extends Controller
             ;
 
             //intializing the header
-            $header = array(
-                'Authorization: '.$token
-            );
-            
+            $header = array('Authorization: '.$token);
+
             //calling the api
             $response = $this->container
                 ->get('app.service.api_caller')
@@ -57,8 +56,9 @@ class ApiTestController extends Controller
             ;
             return new Response($response);
         }
+
         //
-         $response = new Response(
+        $response = new Response(
           $this->renderView('default/test.html.twig',['form' => $form->createView()]),
           200
         );

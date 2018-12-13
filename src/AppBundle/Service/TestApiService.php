@@ -9,7 +9,7 @@
  */
 namespace AppBundle\Service;
 
-// use AppBundle\Constants\ErrorConstants;
+use AppBundle\Constants\ErrorConstants;
 
 class TestApiService
 {

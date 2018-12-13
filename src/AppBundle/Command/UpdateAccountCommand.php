@@ -9,9 +9,7 @@
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateAccountCommand extends ContainerAwareCommand
@@ -29,10 +27,10 @@ class UpdateAccountCommand extends ContainerAwareCommand
     /**
      * Function to execute the upload:accounts command to upload to .
      *
-     *@param $input
-     *@param $output
+     *@param InputInterface $input
+     *@param OutputInterface $output
      *
-     *@return $output
+     *@return 
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {   

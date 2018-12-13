@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Product
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -276,7 +282,7 @@ class Product
      *
      * @return Product
      */
-    public function setSubItem($sub_item)
+    public function setSubItem(\AppBundle\Entity\SubItem $sub_item)
     {
         $this->sub_item = $sub_item;
 
@@ -458,7 +464,7 @@ class Product
      *
      * @return Product
      */
-    public function setItemCategoryType($item_category_type)
+    public function setItemCategoryType(\AppBundle\Entity\ItemCategoryType $item_category_type)
     {
         $this->item_category_type = $item_category_type;
 
@@ -530,7 +536,7 @@ class Product
      *
      * @return Product
      */
-    public function setInvntoryAssetAccount($invntoryAssetAccount)
+    public function setInvntoryAssetAccount( \AppBundle\Entity\Account $invntoryAssetAccount)
     {
         $this->invntoryAssetAccount = $invntoryAssetAccount;
 
@@ -626,7 +632,7 @@ class Product
      *
      * @return Product
      */
-    public function setExpenseAccount($expense_account)
+    public function setExpenseAccount(\AppBundle\Entity\Account $expense_account)
     {
         $this->expense_account = $expense_account;
 
@@ -650,7 +656,7 @@ class Product
      *
      * @return Product
      */
-    public function setPreferedVendor($prefered_vendor)
+    public function setPreferedVendor(\AppBundle\Entity\Vendor $prefered_vendor)
     {
         $this->prefered_vendor = $prefered_vendor;
 

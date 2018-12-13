@@ -9,9 +9,7 @@
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateVendorCommand extends ContainerAwareCommand
@@ -29,8 +27,8 @@ class UpdateVendorCommand extends ContainerAwareCommand
     /**
      * Function to execute the upload:vendors command to upload to .
      *
-     *@param $input
-     *@param $output
+     *@param InputInterface $input
+     *@param OutputInterface $output
      *
      *@return $output
      */

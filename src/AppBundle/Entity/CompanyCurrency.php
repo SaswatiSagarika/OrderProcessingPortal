@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * CompanyCurrency
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -131,11 +137,11 @@ class CompanyCurrency
     /**
      * Set status
      *
-     * @param integer $status
+     * @param \AppBundle\Entity\Status $status
      *
      * @return CompanyCurrency
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -145,7 +151,7 @@ class CompanyCurrency
     /**
      * Get status
      *
-     * @return int
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {

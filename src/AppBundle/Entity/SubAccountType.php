@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * SubAccountType
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -143,7 +149,7 @@ class SubAccountType
      *
      * @return SubAccountType
      */
-    public function setClassification($classification)
+    public function setClassification(\AppBundle\Entity\Classification $classification)
     {
         $this->classification = $classification;
 
@@ -167,7 +173,7 @@ class SubAccountType
      *
      * @return SubAccountType
      */
-    public function setAccountType($accountType)
+    public function setAccountType(\AppBundle\Entity\AccountType $accountType)
     {
         $this->accountType = $accountType;
 
@@ -186,11 +192,11 @@ class SubAccountType
     /**
      * Set status
      *
-     * @param integer $status
+     * @param \AppBundle\Entity\Status $status
      *
      * @return SubAccountType
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status$status)
     {
         $this->status = $status;
 
@@ -200,7 +206,7 @@ class SubAccountType
     /**
      * Get status
      *
-     * @return int
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * AccountType
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -127,7 +133,7 @@ class AccountType
      *
      * @return AccountType
      */
-    public function setCassification($cassification)
+    public function setCassification(\AppBundle\Entity\Classification $cassification)
     {
         $this->cassification = $cassification;
 
@@ -147,11 +153,11 @@ class AccountType
     /**
      * Set status
      *
-     * @param integer $status
+     * @param \AppBundle\Entity\Status  $status
      *
      * @return AccountType
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -161,7 +167,7 @@ class AccountType
     /**
      * Get status
      *
-     * @return int
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * ItemCategoryType
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -118,11 +124,11 @@ class ItemCategoryType
     /**
      * Set status
      *
-     * @param integer $status
+     * @param \AppBundle\Entity\Status $status
      *
      * @return ItemCategoryType
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -132,7 +138,7 @@ class ItemCategoryType
     /**
      * Get status
      *
-     * @return int
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {

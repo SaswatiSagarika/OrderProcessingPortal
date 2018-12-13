@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * TaxCode
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -131,11 +137,11 @@ class TaxCode
     /**
      * Set status
      *
-     * @param integer $status
+     * @param \AppBundle\Entity\Status $status
      *
      * @return TaxCode
      */
-    public function setStatus($status)
+    public function setStatus(\AppBundle\Entity\Status $status)
     {
         $this->status = $status;
 
@@ -145,7 +151,7 @@ class TaxCode
     /**
      * Get status
      *
-     * @return int
+     * @return \AppBundle\Entity\Status
      */
     public function getStatus()
     {
@@ -179,11 +185,11 @@ class TaxCode
     /**
      * Set TaxCode
      *
-     * @param integer $TaxCode
+     * @param \AppBundle\Entity\TaxCode $TaxCode
      *
      * @return TaxCode
      */
-    public function setTaxRateId($TaxCode)
+    public function setTaxRateId(\AppBundle\Entity\TaxCode $TaxCode)
     {
         $this->TaxCode = $TaxCode;
 
@@ -193,7 +199,7 @@ class TaxCode
     /**
      * Get TaxCode
      *
-     * @return int
+     * @return \AppBundle\Entity\TaxCode
      */
     public function getTaxRateId()
     {

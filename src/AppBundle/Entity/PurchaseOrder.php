@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * PurchaseOrder
+ *
+ * @author Saswati
+ *
+ * @category Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -140,11 +146,11 @@ class PurchaseOrder
     /**
      * Set vendor
      *
-     * @param integer $vendor
+     * @param \AppBundle\Entity\Vendor  $vendor
      *
      * @return PurchaseOrder
      */
-    public function setVendor($vendor)
+    public function setVendor(\AppBundle\Entity\Vendor $vendor)
     {
         $this->vendor = $vendor;
 
@@ -154,7 +160,7 @@ class PurchaseOrder
     /**
      * Get vendor
      *
-     * @return int
+     * @return \AppBundle\Entity\Vendor 
      */
     public function getVendor()
     {
@@ -164,11 +170,11 @@ class PurchaseOrder
     /**
      * Set account
      *
-     * @param integer $account
+     * @param \AppBundle\Entity\Account $account
      *
      * @return PurchaseOrder
      */
-    public function setAccount($account)
+    public function setAccount(\AppBundle\Entity\Account $account)
     {
         $this->account = $account;
 
@@ -178,7 +184,7 @@ class PurchaseOrder
     /**
      * Get account
      *
-     * @return int
+     * @return \AppBundle\Entity\Account
      */
     public function getAccount()
     {
@@ -309,11 +315,11 @@ class PurchaseOrder
     /**
      * Set currency
      *
-     * @param integer $currency
+     * @param \AppBundle\Entity\Currency $currency
      *
      * @return PurchaseOrder
      */
-    public function setCurrency($currency)
+    public function setCurrency(\AppBundle\Entity\Currency $currency)
     {
         $this->currency = $currency;
 
@@ -323,7 +329,7 @@ class PurchaseOrder
     /**
      * Get currency
      *
-     * @return int
+     * @return \AppBundle\Entity\Currency
      */
     public function getCurrency()
     {
