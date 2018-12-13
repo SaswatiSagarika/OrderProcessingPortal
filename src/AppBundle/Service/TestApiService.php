@@ -42,7 +42,6 @@ class TestApiService
             $returnData = curl_exec($ch);
             // close cURL resource, and free up system resources
             curl_close($ch);
-            
         } catch (\Exception $e) {
             
             $returnData['errorMessage'] = $e->getMessage();

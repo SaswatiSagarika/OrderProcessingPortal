@@ -16,9 +16,6 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\View;
-use Sch\MainBundle\Entity\User;
-use Sch\MainBundle\Entity\UserPhone;
-use Sch\MainBundle\Entity\TwilioLog;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -29,14 +26,14 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 class ProductController extends FOSRestController
 {
     /**
-    ** REST action which returns sends the data to user number.
+    ** REST action which returns get the data to Product.
     *
     * @Get("/api/products")
     * @View(statusCode=200)
     *
     * @(
     *   resource =false,
-    *   description = "API to send otp to phone number",
+    *   description = "API to get the data to Product",
     * requirements={
     *      {
     *          "name"="_format",
@@ -52,7 +49,7 @@ class ProductController extends FOSRestController
     *       "name"="csndk",
     *       "dataType"="Json",
     *       "required"="true",
-    *       "description"="Json with username and phone number",
+    *       "description"="Json with name or category",
     *       "format"="{""name"":""sprinkler"",""category"":""building""}"
     *       
     *   }},
@@ -66,7 +63,6 @@ class ProductController extends FOSRestController
 	public function getProductDetailAction(Request $request) 
     {
         try {
-
             $demo = json_decode($request->getContent(), true);
             // if content is not provided.
             if (!$demo) {
@@ -82,6 +78,7 @@ class ProductController extends FOSRestController
                $message = $this->get('translator')->trans($returnData['message']);
                 throw new NotFoundHttpException("error2");
             }
+
 
             //getting the result array
             $resultArr =  $this->container

@@ -21,3 +21,5 @@ parameters:
     clientSercret: 'hDcxuF8BvyWX0CFS7KQawnTHTVhkvZ2XRcUIreva'
     redirecturl: 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl'
     hash_signature_key: sjvnwonovnwv8e78eueue2123fdccdf
+    auth_mode: oauth2
+    scope: com.intuit.quickbooks.accounting openid profile email phone address

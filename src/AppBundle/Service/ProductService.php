@@ -60,7 +60,6 @@ class ProductService
     public function checkDetails ($param)
     {
         try {
-            
             $returnData['status'] = false;
             $param['name'] = (isset($param['name'])) ? $param['name'] : "";
             $param['category'] = (isset($param['category'])) ? $param['category'] : "";

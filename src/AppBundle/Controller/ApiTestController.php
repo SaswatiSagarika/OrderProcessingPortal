@@ -44,17 +44,18 @@ class ApiTestController extends Controller
             $token = hash_hmac('sha1', $content, 
                 $this->container->getParameter('hash_signature_key'))
             ;
+
             //intializing the header
             $header = array(
                 'Authorization: '.$token
             );
+            
             //calling the api
             $response = $this->container
                 ->get('app.service.api_caller')
                 ->callingApi($url, $header, $verb, $content)
             ;
-
-            return new Response($response['message']);
+            return new Response($response);
         }
         //
          $response = new Response(

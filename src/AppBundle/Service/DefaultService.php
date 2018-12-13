@@ -52,7 +52,7 @@ class DefaultService
             $scope = $this->serviceContainer->getParameter('scope');
             // Prep Data Services
             $dataService = DataService::Configure(array(
-                'auth_mode' => $auth_modescope,
+                'auth_mode' => $auth_mode,
                 'ClientID' => $clientId,
                 'ClientSecret' =>  $clientSercret,
                 'RedirectURI' => $redirecturl,

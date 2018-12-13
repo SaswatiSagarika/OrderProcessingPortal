@@ -33,17 +33,17 @@ class RequestListener
      * @param $translator
      * @return void
      */
-    public function __construct($authservice, TranslatorInterface $translator) {
+    public function __construct($authservice, $translator) {
         $this->authservice = $authservice;
         $this->translator = $translator;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {    
+            
         $request = $event->getRequest();
-        
         if ('/api/testform' === $request->getPathInfo()) {
-            return false;
+            return true;
         }
         $response = $this->authservice->authenticateRequest($request);
         
