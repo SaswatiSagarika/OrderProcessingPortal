@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Description of DefaultService: used to call dataservice from 
- 
+ * Description of DefaultService: used to call dataservice from Quickbooks 
  * @author Saswati
  * 
  * @category Service
@@ -84,7 +83,7 @@ class DefaultService
             curl_close($ch);
 
             //get authenticate code
-            $parseUrl = parseAuthRedirectUrl($_SERVER['QUERY_STRING']);
+            $parseUrl = parseAuthRedirectUrl($info);
             $authorizationCode = $parseUrl['code'];
             $returnData['RealmID'] = $parseUrl['realmId'];
 
