@@ -378,7 +378,7 @@ class UploadService
                         $returnData = $companyNew;
                     }
                     break;
-                case 'Type'
+                case 'Type':
                     $returnData = $em->getRepository('AppBundle:Type')->findOneBy(array('code' => $data));
                     if (empty($returnData) && Null !== $data) {
                         $typeNew = new Type;

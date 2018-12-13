@@ -11,6 +11,7 @@ namespace AppBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use AppBundle\EventListener\TranslatorInterface;
 use AppBundle\Service\AuthenticateApiService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,17 +22,17 @@ class RequestListener
      * @var $authservice
      */
     private $authservice;
+    
     /**
      * @var $translator
      */
     private $translator;
-     /**
+     
+    /**
      * @param $authservice
-     *
+     * @param $translator
      * @return void
      */
-    
-
     public function __construct($authservice, TranslatorInterface $translator) {
         $this->authservice = $authservice;
         $this->translator = $translator;

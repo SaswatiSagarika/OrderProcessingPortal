@@ -56,7 +56,7 @@ services:
     app.request_listener:
         class: AppBundle\EventListener\RequestListener
         public: true
-        arguments: [ "@app.service.auth" ]
+        arguments: [ "@app.service.auth","@translator" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
