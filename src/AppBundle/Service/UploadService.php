@@ -27,6 +27,7 @@ use AppBundle\Entity\Term;
 use AppBundle\Entity\ItemCategoryType;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Product;
+use Doctrine\Bundle\DoctrineBundle\Registry;;
 
 class UploadService
 {
@@ -62,8 +63,11 @@ class UploadService
         try {
             //getting account data
             $dataCount = $this->dataservice->getDataCount('Account');
-            $startPoint = 1;
+            if (false === $dataCount['status']) {
+                return $dataCount;
+            }
 
+            $startPoint = 1;
             while($dataCount['count'] > $startPoint) {
 
                 $data = $this->dataservice->getData('Account', $startPoint, $dataCount);
@@ -151,7 +155,7 @@ class UploadService
                 $em->flush();
                 $startPoint = $startPoint + 10;
             }
-            $returnData['sucuess'] = "accounts uploaded";
+            $returnData['sucuess'] = $startPoint." no of accounts uploaded";
         } catch (\Exception $e) {
 
             $returnData['errorMessage'] = $e->getMessage();
@@ -170,11 +174,15 @@ class UploadService
     {
         try {
 
-            $dataCount = $this->dataservice->getDataCount('Account');
+            $dataCount = $this->dataservice->getDataCount('Item');
+            if (false === $dataCount['status']) {
+                return $dataCount;
+            }
+            
             $startPoint = 1;
             while($dataCount['count'] > $startPoint) {
 
-                $data = $this->dataservice->getData('Account', $startPoint, $dataCount);
+                $data = $this->dataservice->getData('Item', $startPoint, $dataCount);
                 if (false === $data['status']) {
                     return $data['errorMessage'];
                 }
@@ -261,7 +269,7 @@ class UploadService
                 
                 $em->flush();
             }
-            $returnData['sucuess'] = "items uploaded";
+            $returnData['sucuess'] = $startPoint." no of items uploaded";
         } catch (\Exception $e) {
 
             $returnData['errorMessage'] = $e->getMessage();
@@ -279,11 +287,15 @@ class UploadService
     public function uploadVendors()
     {
         try {
-            $dataCount = $this->dataservice->getDataCount('Account');
+            $dataCount = $this->dataservice->getDataCount('Vendor');
+            if (false === $dataCount['status']) {
+                return $dataCount;
+            }
+
             $startPoint = 1;
             while($dataCount['count'] > $startPoint) {
 
-                $data = $this->dataservice->getData('Account', $startPoint, $dataCount);
+                $data = $this->dataservice->getData('Vendor', $startPoint, $dataCount);
                 if (false === $data['status']) {
                     return $data['errorMessage'];
                 }
@@ -379,7 +391,7 @@ class UploadService
                 $em->flush();
                 $startPoint = $startPoint + 10;
             }
-            $returnData['sucuess'] = "vendors uploaded";
+            $returnData['sucuess'] = $startPoint." no of vendors uploaded";
 
         } catch (\Exception $e) {
 

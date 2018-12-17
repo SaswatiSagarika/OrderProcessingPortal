@@ -27,7 +27,7 @@ class DefaultService
     /**
      *  @var array
      */
-    private $parameters;
+    private $parameter;
     
     /**
      * @var Registry
@@ -42,9 +42,9 @@ class DefaultService
      *   
      *  @return void
      */
-    public function __construct(Registry $doctrine, Array $parameters) {
+    public function __construct(Registry $doctrine, Array $parameter) {
         $this->doctrine = $doctrine;
-        $this->parameters = $parameters;
+        $this->parameter = $parameter;
     }
     
     /**
@@ -57,22 +57,17 @@ class DefaultService
     public function getDataCount($table)
     {
         try {
-
+            $returnData['status'] = false;
             $em = $this->doctrine->getEntityManager();
-            $auth = $this->doctrine->getRepository('MainBundle:Auth')->findBy(array(),array('id'=>'DESC'),0,1);
-
-            
-            $clientId        = $this->parameter('clientId');
-            $clientSecret   = $this->parameter('clientSercret');
-            $authMode        = $this->parameter('authMode');
+            $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
             // Prep Data Services            
             $dataService     = DataService::Configure(array(
-                'auth_mode' => $authMode,
-                'ClientID' => $clientId,
-                'ClientSecret' => $clientSecret,
-                'accessTokenKey' => $auth['accessToken'],
-                'refreshTokenKey' => $auth['refreshToken'],
-                'QBORealmID' => $auth['Realm'],
+                'auth_mode' => $this->parameter['authMode'],
+                'ClientID' => $this->parameter['clientId'],
+                'ClientSecret' => $this->parameter['clientSercret'],
+                'accessTokenKey' => $auth[0]->getAccessToken(),
+                'refreshTokenKey' => $auth[0]->getRefreshToken(),
+                'QBORealmID' => $auth[0]->getRrealm(),
                 'baseUrl' => "Development"
             ));
             
@@ -82,7 +77,7 @@ class DefaultService
                 $returnData['statusCode']      = $error->getHttpStatusCode();
                 $returnData['helperMessage']   = $error->getOAuthHelperError();
                 $returnData['responseMessage'] = $error->getResponseBody();
-                $returnData['updateMessage'] = $this->refreshOauthtoken();
+                $returnData['updateMessage']   = $this->refreshOauthtoken();
                 
                 // $returnData['updateMessage'] = "AccessToken is getting refreshed. Please run the query again";
                 return $returnData;
@@ -92,9 +87,11 @@ class DefaultService
             $statement = "SELECT COUNT" . "(" . "*" . ")" . "FROM ".$table;
             $returnData['count'] = $dataService->Query($statement);
             $returnData['dataService'] = $dataService;
-
+            $returnData['status'] = true;
         }
         catch (\Exception $e) {
+
+            $returnData['updateMessage']   = $this->refreshOauthtoken();
             $returnData['errorMessage'] = $e->getMessage();
 
         }
@@ -185,17 +182,21 @@ class DefaultService
     {
         try {
 
-            $auth = $this->doctrine->getRepository('MainBundle:Auth')->findBy(array(),array('id'=>'DESC'),0,1);
+            $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
 
-            $clientId        = $this->parameter('clientId');
-            $clientSecret   = $this->parameter('clientSercret');
-
-            $oauth2LoginHelper = new OAuth2LoginHelper( $clientId ,$clientSecret);
-            
+            $dataService = DataService::Configure(array(
+                 'auth_mode' => $this->parameter['authMode'],
+                 'ClientID' => $this->parameter['clientId'],
+                 'ClientSecret' => $this->parameter['clientSercret'],
+                 'refreshTokenKey' => $auth[0]->getRefreshToken(),
+                 'QBORealmID' => $auth[0]->getRrealm(),
+                 'baseUrl' => "Development/Production"
+            ));
             $error = $OAuth2LoginHelper->getLastError();
-            $accessTokenObj = $oauth2LoginHelper->
-            refreshAccessTokenWithRefreshToken($auth['Realm']);
-
+            // $accessTokenObj = $oauth2LoginHelper->
+            // refreshAccessTokenWithRefreshToken($auth['Realm']);
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
             if($error){
                 $returnData['statusCode']      = $error->getHttpStatusCode();
                 $returnData['helperMessage']   = $error->getOAuthHelperError();

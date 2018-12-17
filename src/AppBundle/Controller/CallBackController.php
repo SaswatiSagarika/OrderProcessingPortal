@@ -27,7 +27,7 @@ class CallBackController extends Controller
         
         // Prep Data Services
         $dataService = DataService::Configure(array(
-            'auth_mode' => this->container->getParameter('quickbooks')['authMode'],
+            'auth_mode' => $this->container->getParameter('quickbooks')['authMode'],
             'ClientID' => $this->container->getParameter('quickbooks')['clientId'],
             'ClientSecret' =>  $this->container->getParameter('quickbooks')['clientSercret'],
             'RedirectURI' => $this->container->getParameter('quickbooks')['redirectUrl'],
