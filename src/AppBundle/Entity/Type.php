@@ -31,20 +31,20 @@ class Type
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
     private $code;
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     private $status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -58,7 +58,7 @@ class Type
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_updated_time", type="datetime")
+     * @ORM\Column(name="last_updated_time", type="datetime", nullable=true)
      */
     private $lastUpdatedTime;
 

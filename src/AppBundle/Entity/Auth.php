@@ -30,14 +30,14 @@ class Auth
     /**
      * @var string
      *
-     * @ORM\Column(name="accessToken", type="string", length=255)
+     * @ORM\Column(name="access_token", type="string", length=1000)
      */
     private $accessToken;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="realmId", type="string", length=255, unique=true)
+     * @ORM\Column(name="realm_id", type="string", length=255, unique=true)
      */
     private $realm;
 
@@ -46,7 +46,21 @@ class Auth
      *
      * @ORM\Column(name="refresh_token", type="string", length=255, unique=true)
      */
-    private $refresh_token;
+    private $refreshToken;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
+     */
+    private $createdDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_modified_date", type="datetime", nullable=true)
+     */
+    private $lastUpdatedTime;
 
     /**
      * Get id
@@ -113,7 +127,7 @@ class Auth
      *
      * @return Company
      */
-    public function setrefreshToken($refreshToken)
+    public function setRefreshToken($refreshToken)
     {
         $this->refreshToken = $refreshToken;
 
@@ -125,9 +139,82 @@ class Auth
      *
      * @return string
      */
-    public function getrefreshToken()
+    public function getRefreshToken()
     {
         return $this->refreshToken;
+    }
+
+    /**
+     * Set createdDate
+     *
+     * @param \DateTime $createdDate
+     *
+     * @return AccountType
+     */
+    public function setCreatedDate($createdDate)
+    {
+        $this->createdDate = $createdDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createdDate
+     *
+     * @return \DateTime
+     */
+    public function getCreatedDate()
+    {
+        return $this->createdDate;
+    }
+
+    /**
+     * Set lastUpdatedTime
+     *
+     * @param \DateTime $lastUpdatedTime
+     *
+     * @return AccountType
+     */
+    public function setLastUpdatedTime($lastUpdatedTime)
+    {
+        $this->lastUpdatedTime = $lastUpdatedTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdatedTime
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdatedTime()
+    {
+        return $this->lastUpdatedTime;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdDate = new \DateTime();
+    }
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->lastUpdateDateTime = new \DateTime();
+    }
+    
+    /**
+     * Generates the magic method
+     * 
+     */
+    public function __toString(){
+        
+        return $this->name;
+        
     }
 }
 

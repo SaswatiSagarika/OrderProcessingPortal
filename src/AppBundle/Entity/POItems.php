@@ -131,11 +131,11 @@ class POItems
     /**
      * Set item
      *
-     * @param \AppBundle\Entity\Item $item
+     * @param \AppBundle\Entity\Product $item
      *
      * @return POItems
      */
-    public function setItem(\AppBundle\Entity\Item $item)
+    public function setItem(\AppBundle\Entity\Product $item)
     {
         $this->item = $item;
 
@@ -145,7 +145,7 @@ class POItems
     /**
      * Get item
      *
-     * @return \AppBundle\Entity\Item
+     * @return \AppBundle\Entity\Product
      */
     public function getItemId()
     {

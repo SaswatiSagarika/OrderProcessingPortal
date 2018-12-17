@@ -27,7 +27,7 @@ class ApiTestController extends Controller
      *
      * @Route("/api/testform", name="form")
      *
-     * @param $request
+     * @param Request $request
      *
      * @return $response
      */

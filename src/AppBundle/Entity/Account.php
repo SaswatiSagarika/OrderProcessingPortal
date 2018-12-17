@@ -44,7 +44,7 @@ class Account
 
     /**
      * @ORM\ManyToOne(targetEntity="AccountType")
-     * @ORM\JoinColumn(name="account_type_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="account_type_id", referencedColumnName="id", nullable=true)
      */
     private $account_type;
 
@@ -58,7 +58,7 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="account_id", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="account_id", type="string", length=255, unique=true)
      */
     private $accountId;
 
@@ -71,19 +71,19 @@ class Account
 
      /**
      * @ORM\ManyToOne(targetEntity="CompanyCurrency")
-     * @ORM\JoinColumn(name="currency_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="currency_id", referencedColumnName="id",  nullable=true)
      */
     private $currency;
 
      /**
      * @ORM\ManyToOne(targetEntity="TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id",  nullable=true)
      */
     private $taxCode;
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     private $status;
 
@@ -96,13 +96,13 @@ class Account
 
     /**
      * @ORM\ManyToOne(targetEntity="SubAccountType")
-     * @ORM\JoinColumn(name="sub_account_type", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="sub_account_type", referencedColumnName="id", nullable=true)
      */
     private $subAccountType;
 
     /**
      * @ORM\ManyToOne(targetEntity="Classification")
-     * @ORM\JoinColumn(name="classification_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="classification_id", referencedColumnName="id",  nullable=true)
      */
     private $classification;
 
@@ -116,21 +116,21 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=true, nullable=false)
+     * @ORM\Column(name="domain", type="string", length=255, nullable=true,  nullable=true)
      */
     private $domain;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_updated_time", type="datetime", nullable=false)
+     * @ORM\Column(name="last_updated_time", type="datetime", nullable=true)
      */
     private $lastUpdatedTime;
 

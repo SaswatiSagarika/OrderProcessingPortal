@@ -33,33 +33,4 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
-    app.service.default:
-        class: AppBundle\Service\DefaultService
-        public: true
-        arguments: ["@service_container"]
-
-    app.service.upload:
-        class: AppBundle\Service\UploadService
-        public: true
-        arguments: ["@doctrine", "@app.service.default", "@service_container"]
-
-    app.service.product:
-        class: AppBundle\Service\ProductService
-        public: true
-        arguments: ["@doctrine", "@service_container"]
-
-    app.service.auth:
-        class: AppBundle\Service\AuthenticateApiService
-        public: true
-        arguments: ["@doctrine", "@service_container"]
-
-    # app.request_listener:
-    #     class: AppBundle\EventListener\RequestListener
-    #     public: true
-    #     arguments: [ "@app.service.auth","@translator" ]
-    #     tags:
-    #         - { name: kernel.event_listener, event: kernel.request }
-
-    app.service.api_caller:
-        class: AppBundle\Service\TestApiService
-        public: true
+   

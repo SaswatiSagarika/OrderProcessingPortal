@@ -19,7 +19,7 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
     clientId: 'Q0Lrh87N97mV0kR88pxasIB3eB4JeG41nFiN749CRzA7NQ8rih'
     clientSercret: 'hDcxuF8BvyWX0CFS7KQawnTHTVhkvZ2XRcUIreva'
-    redirecturl: 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl'
+    redirectUrl: 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl'
     hash_signature_key: sjvnwonovnwv8e78eueue2123fdccdf
-    auth_mode: oauth2
+    authMode: oauth2
     scope: com.intuit.quickbooks.accounting openid profile email phone address

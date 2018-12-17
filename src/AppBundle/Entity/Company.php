@@ -30,28 +30,28 @@ class Company
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company_code", type="string", length=255, unique=true)
+     * @ORM\Column(name="company_code", type="string", length=255, nullable=true, unique=true)
      */
     private $company_code;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_modified_date", type="datetime")
+     * @ORM\Column(name="last_modified_date", type="datetime", nullable=true)
      */
     private $lastUpdatedTime;
 

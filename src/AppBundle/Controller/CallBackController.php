@@ -12,42 +12,47 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use QuickBooksOnline\API\DataService\DataService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class CallBackController extends Controller
 {
     /**
-     * @Route("/callback", name="")
+     * @Route("/callback", name="callback")
      */
     public function indexAction(Request $request)
     {
-		$clientId = $this->container->getParameter('clientId');
-        $clientSercret = $this->container->getParameter('clientSercret');
-        $redirecturl = $this->container->getParameter('redirecturl');
-        $auth_mode = $this->container->getParameter('auth_mode');
-        $scope = $this->container->getParameter('scope');
+        $session= new Session();
+        
         // Prep Data Services
         $dataService = DataService::Configure(array(
-            'auth_mode' => $auth_mode,
-            'ClientID' => $clientId,
-            'ClientSecret' =>  $clientSercret,
-            'RedirectURI' => $redirecturl,
-            'scope' => $scope,
+            'auth_mode' => this->container->getParameter('quickbooks')['authMode'],
+            'ClientID' => $this->container->getParameter('quickbooks')['clientId'],
+            'ClientSecret' =>  $this->container->getParameter('quickbooks')['clientSercret'],
+            'RedirectURI' => $this->container->getParameter('quickbooks')['redirectUrl'],
+            'scope' => $this->container->getParameter('quickbooks')['scope'],
             'baseUrl' => "development",        
         ));
 
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-        $data = $request->server->get('QUERY_STRING');
-        $parseUrl = $this->container
-                ->get('app.service.default')
-                ->parseAuthRedirectUrl($data);
 
-        $accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
-        $dataService->updateOAuth2Token($accessToken);
-        
-        
-        
+        $data = $request->server->get('QUERY_STRING');
+        //parsing query string
+        $parseUrl = $this->container
+                        ->get('app.service.default')
+                        ->parseAuthRedirectUrl($data);
+
+        $accessTokenObj = $OAuth2LoginHelper
+                            ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
+        $session->set('code', $accessTokenObj);
+
+         $saveData = $this->container
+            ->get('app.service.default')
+            ->addNewUpdates($accessTokenObj);
+
     }
+
+
 }
+

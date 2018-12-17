@@ -31,140 +31,134 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sku", type="string", length=10, unique=true)
+     * @ORM\Column(name="sku", type="string", length=10, unique=true, nullable=true)
      */
     private $sku;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SubItem")
-     * @ORM\JoinColumn(name="sub_item_id", referencedColumnName="id", nullable=false)
-     */
-    private $sub_item;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="level", type="string", length=255)
+     * @ORM\Column(name="level", type="string", length=255, nullable=true)
      */
     private $level;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="taxable", type="boolean")
+     * @ORM\Column(name="taxable", type="boolean", nullable=true)
      */
     private $taxable;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="sales_tax_included", type="boolean")
+     * @ORM\Column(name="sales_tax_included", type="boolean", nullable=true)
      */
     private $sales_tax_included;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="unit_price", type="string", length=255)
+     * @ORM\Column(name="unit_price", type="string", length=255, nullable=true)
      */
     private $unit_price;
 
     /**
      * @ORM\ManyToOne(targetEntity="Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
      */
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account")
-     * @ORM\JoinColumn(name="inventory_assest_account_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="inventory_assest_account_id", referencedColumnName="id", nullable=true)
      */
     private $inventory_assest_account;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $created_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_updated_time", type="datetime")
+     * @ORM\Column(name="last_updated_time", type="datetime", nullable=true)
      */
     private $last_updated_time;
 
     /**
      * @ORM\ManyToOne(targetEntity="ItemCategoryType")
-     * @ORM\JoinColumn(name="item_category_type_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="item_category_type_id", referencedColumnName="id", nullable=true)
      */
     private $item_category_type;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="quantity_on_hand", type="integer")
+     * @ORM\Column(name="quantity_on_hand", type="integer", nullable=true)
      */
     private $quantity_on_hand;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="reorder_point", type="integer")
+     * @ORM\Column(name="reorder_point", type="integer", nullable=true)
      */
     private $reorder_point;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sales_information", type="string", length=255)
+     * @ORM\Column(name="sales_information", type="string", length=255, nullable=true)
      */
     private $sales_information;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="purchasing_information", type="string", length=255)
+     * @ORM\Column(name="purchasing_information", type="string", length=255, nullable=true)
      */
     private $purchasing_information;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="cost", type="integer")
+     * @ORM\Column(name="cost", type="integer", nullable=true)
      */
     private $cost;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account")
-     * @ORM\JoinColumn(name="expense_account_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="expense_account_id", referencedColumnName="id", nullable=true)
      */
     private $expense_account;
 
     /**
      * @ORM\ManyToOne(targetEntity="Vendor")
-     * @ORM\JoinColumn(name="prefered_vendor_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="prefered_vendor_id", referencedColumnName="id", nullable=true)
      */
     private $prefered_vendor;
 
@@ -273,30 +267,6 @@ class Product
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set sub_item
-     *
-     * @param \AppBundle\Entity\SubItem $sub_item
-     *
-     * @return Product
-     */
-    public function setSubItem(\AppBundle\Entity\SubItem $sub_item)
-    {
-        $this->sub_item = $sub_item;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_item
-     *
-     * @return \AppBundle\Entity\SubItem
-     */
-    public function getSubItem()
-    {
-        return $this->sub_item;
     }
 
     /**

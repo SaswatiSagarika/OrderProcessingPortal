@@ -31,14 +31,14 @@ class CompanyCurrency
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=10)
+     * @ORM\Column(name="code", type="string", length=10, nullable=true)
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -51,28 +51,28 @@ class CompanyCurrency
     /**
      * @var string
      *
-     * @ORM\Column(name="sparse", type="string", length=255)
+     * @ORM\Column(name="sparse", type="string", length=255, nullable=true)
      */
     private $sparse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255)
+     * @ORM\Column(name="domain", type="string", length=255, nullable=true)
      */
     private $domain;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_modified_date", type="datetime")
+     * @ORM\Column(name="last_modified_date", type="datetime", nullable=true)
      */
     private $lastUpdatedTime;
 

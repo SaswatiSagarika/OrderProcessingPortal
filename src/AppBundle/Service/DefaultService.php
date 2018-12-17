@@ -10,6 +10,7 @@
  */
 namespace AppBundle\Service;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
@@ -17,103 +18,197 @@ use QuickBooksOnline\API\Facades\Account;
 use QuickBooksOnline\API\Facades\Item;
 use QuickBooksOnline\API\Facades\Vendor;
 use QuickBooksOnline\API\Facades\CompanyInfo;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\Entity\Auth;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 
 class DefaultService
-{   
+{
     /**
-     * @var serviceContainer
+     *  @var array
      */
-    protected $serviceContainer;
+    private $parameters;
+    
+    /**
+     * @var Registry
+     */
+    protected $doctrine;
 
     /**
-     * 
-     * @param $service_container
-     *
-     * @return void
+     *  Constructor Function for iniatialize dependencies.
+     *  
+     *  @param Registry $doctrine
+     *  @param Array $parameters
+     *   
+     *  @return void
      */
-
-    public function __construct($service_container) {
-        $this->serviceContainer = $service_container;
+    public function __construct(Registry $doctrine, Array $parameters) {
+        $this->doctrine = $doctrine;
+        $this->parameters = $parameters;
     }
-
-     /**
-     * Function to get data from quickbooks based on table name
+    
+    /**
+     * Function to get datacount from quickbooks based on table name
      *
-     * @param $table  
+     * @param string $table  
      *
      * @return array
-     *
      **/
-    public function getData($table)
-    {   
+    public function getDataCount($table)
+    {
         try {
 
-            $clientId = $this->serviceContainer->getParameter('clientId');
-            $clientSercret = $this->serviceContainer->getParameter('clientSercret');
-            $authMode = $this->serviceContainer->getParameter('auth_mode');
-            $accessTokenKey = $this->serviceContainer->getParameter('accessTokenKey');
-            $refreshTokenKey = $this->serviceContainer->getParameter('refreshTokenKey');
-            $QBORealmID = $this->serviceContainer->getParameter('QBORealmID');
+            $em = $this->doctrine->getEntityManager();
+            $auth = $this->doctrine->getRepository('MainBundle:Auth')->findBy(array(),array('id'=>'DESC'),0,1);
+
+            
+            $clientId        = $this->parameter('clientId');
+            $clientSecret   = $this->parameter('clientSercret');
+            $authMode        = $this->parameter('authMode');
             // Prep Data Services            
-            $dataService = DataService::Configure(array(
-                'auth_mode' =>  $auth_mode,
+            $dataService     = DataService::Configure(array(
+                'auth_mode' => $authMode,
                 'ClientID' => $clientId,
-                'ClientSecret' => $clientSercret,
-                'accessTokenKey' => $accessTokenKey,
-                'refreshTokenKey' => $refreshTokenKey,
-                'QBORealmID' => $QBORealmID,
+                'ClientSecret' => $clientSecret,
+                'accessTokenKey' => $auth['accessToken'],
+                'refreshTokenKey' => $auth['refreshToken'],
+                'QBORealmID' => $auth['Realm'],
                 'baseUrl' => "Development"
             ));
-
-            //getting data from the table defined
-            switch ($table) {
-                case 'Account':
-                    $data = $dataService->Query("SELECT * FROM Account");
-                    break;
-                case 'Item':
-                    $data = $dataService->Query("SELECT * FROM Item WHERE Type='Inventory'");
-                    break;
-                case 'Vendor':
-                    $data = $dataService->Query("SELECT * FROM Vendor");
-                    break;
-                default:
-                    $data = "not valid table";
-                    break;
-            }
-
+            
             //checking if any error occured
             $error = $dataService->getLastError();
             if ($error) {
-                $returnData['statusCode'] = $error->getHttpStatusCode();
-                $returnData['helperMessage'] = $error->getOAuthHelperError();
+                $returnData['statusCode']      = $error->getHttpStatusCode();
+                $returnData['helperMessage']   = $error->getOAuthHelperError();
                 $returnData['responseMessage'] = $error->getResponseBody();
+                $returnData['updateMessage'] = $this->refreshOauthtoken();
+                
+                // $returnData['updateMessage'] = "AccessToken is getting refreshed. Please run the query again";
+                return $returnData;
             }
             
-            $returnData['data'] = $data;
+            //getting data from the table defined
+            $statement = "SELECT COUNT" . "(" . "*" . ")" . "FROM ".$table;
+            $returnData['count'] = $dataService->Query($statement);
+            $returnData['dataService'] = $dataService;
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $returnData['errorMessage'] = $e->getMessage();
+
         }
         
         return $returnData;
         
     }
-
-     /**
+    
+    /**
      * Function to parse auth url
      *
-     * @param $url  
+     * @param string $url  
      *
      * @return array
-     *
      **/
     public function parseAuthRedirectUrl($url)
     {
-        parse_str($url,$qsArray);
+        parse_str($url, $qsArray);
         return array(
             'code' => $qsArray['code'],
             'realmId' => $qsArray['realmId']
         );
     }
-}
 
+    /**
+     * Private function to create new records in database
+     *
+     * @param array $params  
+     *
+     * @return array
+     */
+    public function addNewUpdates($params)
+    {
+        try {
+            $returnData['status'] = false;
+            $em = $this->doctrine->getEntityManager();
+
+            //creating records in Auth table
+            $auth = new Auth;
+            $auth->setAccessToken($params->getAccessToken())
+            ->setRealm($params->getrealmID())
+            ->setRefreshToken($params->getRefreshToken());
+
+            $em->persist($auth);
+            $em->flush();
+
+            $returnData['status'] = true;
+            $returnData['message'] = "new AccessToken is added. Enjoy working on Quickbooks";
+        } catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        return $returnData;
+    }
+
+     /**
+     * Private function to get records from database
+     *
+     * @param array $table  
+     * @param string $startPoint   
+     * @param string $dataCount   
+     *
+     * @return array
+     */
+     public function getData($table, $startPoint, $dataCount)
+     {
+        try {
+             $returnData['status'] = false;
+            $dataService = $dataCount['dataService'];
+            if ( 'Item' === $table) {
+                $statement = "SELECT COUNT" . "(" . "*" . ")" . "FROM ".$table."WHERE Type='Inventory'STARTPOSITION".$startPoint."MAXRESULTS 10";
+            } else {
+                $statement = "SELECT * FROM ".$table ."STARTPOSITION".$startPoint."MAXRESULTS 10";
+            }
+            $returnData['data'] = $dataService->Query($statement);
+             $returnData['status'] = true;
+        } catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        return $returnData;
+    }
+
+    /**
+     * Private function to refresh the accessToken  
+     *
+     * @return array
+     */
+    public function refreshOauthtoken()
+    {
+        try {
+
+            $auth = $this->doctrine->getRepository('MainBundle:Auth')->findBy(array(),array('id'=>'DESC'),0,1);
+
+            $clientId        = $this->parameter('clientId');
+            $clientSecret   = $this->parameter('clientSercret');
+
+            $oauth2LoginHelper = new OAuth2LoginHelper( $clientId ,$clientSecret);
+            
+            $error = $OAuth2LoginHelper->getLastError();
+            $accessTokenObj = $oauth2LoginHelper->
+            refreshAccessTokenWithRefreshToken($auth['Realm']);
+
+            if($error){
+                $returnData['statusCode']      = $error->getHttpStatusCode();
+                $returnData['helperMessage']   = $error->getOAuthHelperError();
+                $returnData['responseMessage'] = $error->getResponseBody();
+            }else{
+                $token = $dataService->updateOAuth2Token($refreshedAccessTokenObj);
+
+                $returnData = $this->addNewUpdates($token);
+            }
+            
+        } catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        return $returnData;
+    }
+}

@@ -56,12 +56,6 @@ class TaxCode
     private $taxable;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TaxRate")
-     * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", nullable=false)
-     */
-    private $taxRate;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_date", type="datetime")
@@ -180,30 +174,6 @@ class TaxCode
     public function getTaxable()
     {
         return $this->taxable;
-    }
-
-    /**
-     * Set TaxCode
-     *
-     * @param \AppBundle\Entity\TaxCode $TaxCode
-     *
-     * @return TaxCode
-     */
-    public function setTaxRateId(\AppBundle\Entity\TaxCode $TaxCode)
-    {
-        $this->TaxCode = $TaxCode;
-
-        return $this;
-    }
-
-    /**
-     * Get TaxCode
-     *
-     * @return \AppBundle\Entity\TaxCode
-     */
-    public function getTaxRateId()
-    {
-        return $this->TaxCode;
     }
 
     /**

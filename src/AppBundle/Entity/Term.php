@@ -30,7 +30,7 @@ class Term
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -43,35 +43,35 @@ class Term
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="duedate", type="datetime")
+     * @ORM\Column(name="duedate", type="datetime", nullable=true)
      */
     private $duedate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="type", type="string", length=255, nullable=true)
      */
     private $type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255)
+     * @ORM\Column(name="domain", type="string", length=255, nullable=true)
      */
     private $domain;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sparse", type="string", length=255)
+     * @ORM\Column(name="sparse", type="string", length=255, nullable=true)
      */
     private $sparse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="discount_day", type="string", length=255)
+     * @ORM\Column(name="discount_day", type="string", length=255, nullable=true)
      */
     private $discountDay;
 

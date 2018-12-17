@@ -1,6 +1,6 @@
 <?php
 /**
- * EventListener 
+ * RequestListener 
  *
  * @author Saswati
  *
@@ -27,20 +27,26 @@ class RequestListener
      * @var $translator
      */
     private $translator;
-     
+    
     /**
-     * @param $authservice
-     * @param $translator
+     * @param AuthenticateApiService $authservice
+     * @param TranslatorInterface $translator
+     *
      * @return void
      */
-    public function __construct($authservice, $translator) {
+    public function __construct(AuthenticateApiService $authservice, TranslatorInterface $translator) {
         $this->authservice = $authservice;
         $this->translator = $translator;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     *
+     * @return void
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {    
-            
+        
         $request = $event->getRequest();
         if ('/api/testform' === $request->getPathInfo()) {
             return true;
@@ -50,7 +56,7 @@ class RequestListener
         if(true !== $response['status']){
             
             $responseData['error'] = $this->translator->trans($response['errorMessage']['message']);
-        	$event->setResponse(new JsonResponse($responseData));
+            $event->setResponse(new JsonResponse($responseData));
         }
         return; 
     }

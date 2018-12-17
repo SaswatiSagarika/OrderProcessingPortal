@@ -315,11 +315,11 @@ class PurchaseOrder
     /**
      * Set currency
      *
-     * @param \AppBundle\Entity\Currency $currency
+     * @param \AppBundle\Entity\CompanyCurrency $currency
      *
      * @return PurchaseOrder
      */
-    public function setCurrency(\AppBundle\Entity\Currency $currency)
+    public function setCurrency(\AppBundle\Entity\CompanyCurrency $currency)
     {
         $this->currency = $currency;
 
@@ -329,7 +329,7 @@ class PurchaseOrder
     /**
      * Get currency
      *
-     * @return \AppBundle\Entity\Currency
+     * @return \AppBundle\Entity\CompanyCurrency
      */
     public function getCurrency()
     {

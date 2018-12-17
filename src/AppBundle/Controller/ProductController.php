@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Controller for product Section.
  *
@@ -26,76 +25,73 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 class ProductController extends FOSRestController
 {
     /**
-    ** REST action which returns get the data to Product.
-    *
-    * @Get("/api/products")
-    * @View(statusCode=200)
-    *
-    * @(
-    *   resource =false,
-    *   description = "API to get the data to Product",
-    * requirements={
-    *      {
-    *          "name"="_format",
-    *          "dataType"="string",
-    *          "description"="Response format"
-    *      },
-    *      {
-    *          "name"="_locale",
-    *          "requirement"="en|my"
-    *      }
-    *  },
-    *  parameters={{
-    *       "name"="csndk",
-    *       "dataType"="Json",
-    *       "required"="true",
-    *       "description"="Json with name or category",
-    *       "format"="{""name"":""sprinkler"",""category"":""building""}"
-    *       
-    *   }},
-    *  statusCodes={
-    *         200="Returned when successful",
-    *         401="Returned when not authorized",
-    *  }
-    *)
-    * @return array
-    */
-	public function getProductDetailAction(Request $request) 
+     ** REST action which returns get the data to Product.
+     *
+     * @Get("/api/products")
+     * @View(statusCode=200)
+     *
+     * @(
+     *   resource =false,
+     *   description = "API to get the data to Product",
+     * requirements={
+     *      {
+     *          "name"="_format",
+     *          "dataType"="string",
+     *          "description"="Response format"
+     *      },
+     *      {
+     *          "name"="_locale",
+     *          "requirement"="en|my"
+     *      }
+     *  },
+     *  parameters={{
+     *       "name"="csndk",
+     *       "dataType"="Json",
+     *       "required"="true",
+     *       "description"="Json with name or category",
+     *       "format"="{""name"":""sprinkler"",""category"":""building""}"
+     *
+     *   }},
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         401="Returned when not authorized",
+     *  }
+     *)
+     * @param Request $request
+     * @return array
+     */
+    public function getProductDetailAction(Request $request)
     {
         try {
-            $demo = json_decode($request->getContent(), true);
+            $requestContent = json_decode($request->getContent(), true);
             // if content is not provided.
-            if (!$demo) {
+            if (!$requestContent) {
                 $message = $this->get('translator')->trans('api.missing_parameters');
-                throw new NotFoundHttpException("error1");
+                throw new NotFoundHttpException($message);
             }
             //sanitizing and checking the params
-            $productData =  $this->container
-                ->get('app.service.product')
-                ->checkDetails($demo);
-
+            $productData = $this->container->get('app.service.product')->checkDetails($requestContent);
+            
             if (false === $productData['status']) {
-               $message = $this->get('translator')->trans($returnData['message']);
-                throw new NotFoundHttpException("error2");
+                $message = $this->get('translator')->trans($productData['message']);
+                throw new NotFoundHttpException($message);
             }
-
-
+            
             //getting the result array
-            $resultArr =  $this->container
-                ->get('app.service.product')
-                ->getProductResponse($productData);
-
-            if (false === $resultArr['status']) {
-                   $message = $this->get('translator')->trans($resultArr['message']); 
-                    throw new NotFoundHttpException("error3");
+            $productArr = $this->container->get('app.service.product')->getProductResponse($productData);
+            
+            if (false === $productArrf['status']) {
+                $message = $this->get('translator')->trans($productArrf['message']);
+                throw new NotFoundHttpException($message);
             }
-
-            $resultArray['success'] = $resultArr;
-
-        } catch (Exception $e) {
+            
+            $resultArray['success'] = $productArrf;
+            
+        }
+        catch (Exception $e) {
             $resultArray['error'] = $e->getMessage();
         }
         return $resultArray;
-	}
-
+    }
+    
 }

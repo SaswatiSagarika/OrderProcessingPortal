@@ -29,7 +29,6 @@
         "guzzlehttp/guzzle": "^6.3",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.4",
-        "jms/translation-bundle": "dev-master#c14c4d800ac611e4779243af74d923b63aba9f57",
         "nelmio/api-doc-bundle": "^3.3",
         "php-translation/symfony-bundle": "^0.8.1",
         "quickbooks/v3-php-sdk": "^5.0",
@@ -45,7 +44,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^4.2"
     },
     "scripts": {
         "symfony-scripts": [

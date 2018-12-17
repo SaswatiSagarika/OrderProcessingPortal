@@ -30,135 +30,135 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="Company")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=true)
      */
     private $company;
 
     /**
      * @ORM\ManyToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     private $status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="integer", length=255)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email_address", type="string", length=255)
+     * @ORM\Column(name="email_address", type="string", length=255, nullable=true)
      */
     private $emailAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="web_address", type="string", length=255)
+     * @ORM\Column(name="web_address", type="string", length=255, nullable=true)
      */
     private $webAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity="TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=true)
      */
     private $tax;
 
     /**
      * @ORM\ManyToOne(targetEntity="Term")
-     * @ORM\JoinColumn(name="term_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="term_id", referencedColumnName="id", nullable=true)
      */
     private $term;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="balance", type="float")
+     * @ORM\Column(name="balance", type="float", nullable=true)
      */
     private $balance;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="account_number", type="string", length=255)
+     * @ORM\Column(name="account_number", type="string", length=255, nullable=true)
      */
     private $accountNumber;
 
     /**
      * @ORM\ManyToOne(targetEntity="CompanyCurrency")
-     * @ORM\JoinColumn(name="company_currency_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="company_currency_id", referencedColumnName="id", nullable=true)
      */
     private $currency;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="vendor1099", type="boolean")
+     * @ORM\Column(name="vendor1099", type="boolean", nullable=true)
      */
     private $vendor1099;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="line1", type="string", length=255)
+     * @ORM\Column(name="line1", type="string", length=255, nullable=true)
      */
     private $line1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="line2", type="string", length=255)
+     * @ORM\Column(name="line2", type="string", length=255, nullable=true)
      */
     private $line2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="line3", type="string", length=255)
+     * @ORM\Column(name="line3", type="string", length=255, nullable=true)
      */
     private $line3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="country_sub_division_code", type="string", length=255)
+     * @ORM\Column(name="country_sub_division_code", type="string", length=255, nullable=true)
      */
     private $countrySubDivisionCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="postal_code", type="string", length=255)
+     * @ORM\Column(name="postal_code", type="string", length=255, nullable=true)
      */
     private $postalCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="string", length=255)
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
      */
     private $country;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="latitude", type="string", length=255)
+     * @ORM\Column(name="latitude", type="string", length=255, nullable=true)
      */
     private $latitude;
 
@@ -172,21 +172,21 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="logitude", type="string", length=255)
+     * @ORM\Column(name="logitude", type="string", length=255, nullable=true)
      */
     private $logitude;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_updated_time", type="datetime")
+     * @ORM\Column(name="last_updated_time", type="datetime", nullable=true)
      */
     private $lastUpdatedTime;
 
@@ -286,7 +286,7 @@ class Vendor
     /**
      * Set phone
      *
-     * @param int $phone
+     * @param string $phone
      *
      * @return Vendor
      */
@@ -300,7 +300,7 @@ class Vendor
     /**
      * Get phone
      *
-     * @return int
+     * @return string
      */
     public function getPhone()
     {
