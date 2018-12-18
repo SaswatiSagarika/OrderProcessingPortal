@@ -58,44 +58,17 @@ class DefaultService
     {
         try {
             $returnData['status'] = false;
-            $em = $this->doctrine->getEntityManager();
-            $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
-            // Prep Data Services            
-            $dataService     = DataService::Configure(array(
-                'auth_mode' => $this->parameter['authMode'],
-                'ClientID' => $this->parameter['clientId'],
-                'ClientSecret' => $this->parameter['clientSercret'],
-                'accessTokenKey' => $auth[0]->getAccessToken(),
-                'refreshTokenKey' => $auth[0]->getRefreshToken(),
-                'QBORealmID' => $auth[0]->getRrealm(),
-                'baseUrl' => "Development"
-            ));
+            $dataService = $this->getDataService();
+
+            $returnData['count'] = $dataService->Query("SELECT COUNT" . "(" . "*" . ")" . " FROM ".$table);
             
-            //checking if any error occured
-            $error = $dataService->getLastError();
-            if ($error) {
-                $returnData['statusCode']      = $error->getHttpStatusCode();
-                $returnData['helperMessage']   = $error->getOAuthHelperError();
-                $returnData['responseMessage'] = $error->getResponseBody();
-                $returnData['updateMessage']   = $this->refreshOauthtoken();
-                
-                // $returnData['updateMessage'] = "AccessToken is getting refreshed. Please run the query again";
-                return $returnData;
-            }
-            
-            //getting data from the table defined
-            $statement = "SELECT COUNT" . "(" . "*" . ")" . "FROM ".$table;
-            $returnData['count'] = $dataService->Query($statement);
             $returnData['dataService'] = $dataService;
-            $returnData['status'] = true;
+            $returnData['status'] = true;          
         }
         catch (\Exception $e) {
-
-            $returnData['updateMessage']   = $this->refreshOauthtoken();
             $returnData['errorMessage'] = $e->getMessage();
-
         }
-        
+       
         return $returnData;
         
     }
@@ -109,7 +82,7 @@ class DefaultService
      **/
     public function parseAuthRedirectUrl($url)
     {
-        parse_str($url, $qsArray);
+        parse_str ($url, $qsArray);
         return array(
             'code' => $qsArray['code'],
             'realmId' => $qsArray['realmId']
@@ -150,18 +123,18 @@ class DefaultService
      * Private function to get records from database
      *
      * @param array $table  
-     * @param string $startPoint   
-     * @param string $dataCount   
+     * @param string $startPoint 
      *
      * @return array
      */
-     public function getData($table, $startPoint, $dataCount)
+     public function getData($table, $startPoint)
      {
         try {
-             $returnData['status'] = false;
-            $dataService = $dataCount['dataService'];
+            
+            $returnData['status'] = false;
+            $dataService = $this->getDataService();
             if ( 'Item' === $table) {
-                $statement = "SELECT COUNT" . "(" . "*" . ")" . "FROM ".$table."WHERE Type='Inventory'STARTPOSITION".$startPoint."MAXRESULTS 10";
+                $statement = "SELECT * FROM  Item WHERE Type='Inventory' STARTPOSITION 1 MAXRESULTS 10";
             } else {
                 $statement = "SELECT * FROM ".$table ."STARTPOSITION".$startPoint."MAXRESULTS 10";
             }
@@ -182,6 +155,7 @@ class DefaultService
     {
         try {
 
+            $returnData['status'] = false;
             $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
 
             $dataService = DataService::Configure(array(
@@ -193,23 +167,74 @@ class DefaultService
                  'baseUrl' => "Development/Production"
             ));
             $error = $OAuth2LoginHelper->getLastError();
-            // $accessTokenObj = $oauth2LoginHelper->
-            // refreshAccessTokenWithRefreshToken($auth['Realm']);
+            
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
-            if($error){
+            if ($error) {
                 $returnData['statusCode']      = $error->getHttpStatusCode();
                 $returnData['helperMessage']   = $error->getOAuthHelperError();
                 $returnData['responseMessage'] = $error->getResponseBody();
-            }else{
-                $token = $dataService->updateOAuth2Token($refreshedAccessTokenObj);
-
-                $returnData = $this->addNewUpdates($token);
+                return $returnData;
             }
-            
+            $token = $dataService->updateOAuth2Token($refreshedAccessTokenObj);
+
+            $authUpdates = $this->addNewUpdates($refreshedAccessTokenObj);
+
+            if (false === $authUpdates['status']) {
+                return $$authUpdates;
+            }
+            $returnData['status'] = true;
         } catch (\Exception $e) {
             $returnData['errorMessage'] = $e->getMessage();
         }
-        return $returnData;
+        return $returnData;       
+    }
+
+    /**
+     * Private function to get the dataService  
+     *
+     * @return array
+     */
+    public function getDataService() {
+        try {
+            $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
+
+            // Prep Data Services            
+            $dataService     = DataService::Configure(array(
+                'auth_mode' => $this->parameter['authMode'],
+                'ClientID' => $this->parameter['clientId'],
+                'ClientSecret' => $this->parameter['clientSercret'],
+                'accessTokenKey' => $auth[0]->getAccessToken(),
+                'refreshTokenKey' => $auth[0]->getRefreshToken(),
+                'QBORealmID' => $auth[0]->getRrealm(),
+                'baseUrl' => "Development"
+            ));
+
+            $error = $dataService->getLastError();
+            if ($error) {
+                $returnData['statusCode']      = $error->getHttpStatusCode();
+                $returnData['helperMessage']   = $error->getOAuthHelperError();
+                $returnData['responseMessage'] = $error->getResponseBody();
+                //if accesstoken is expired
+                $returnData['updateMessage']   = $this->refreshOauthtoken();
+                //getting the dataservice again
+                $dataService = $this->getDataService();
+                
+            }            
+        }
+        catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+            
+            //if accesstoken is expired
+            $refreshAccessToken   = $this->refreshOauthtoken();
+            //getting the dataservice again
+            if (false === $refreshAccessToken['status']) {
+                return $refreshAccessToken;
+            }
+
+            $dataService = $this->getDataService();
+        }
+        
+        return $dataService;
     }
 }

@@ -67,10 +67,10 @@ class UploadService
                 return $dataCount;
             }
 
-            $startPoint = 1;
+            $startPoint = 0;
             while($dataCount['count'] > $startPoint) {
 
-                $data = $this->dataservice->getData('Account', $startPoint, $dataCount);
+                $data = $this->dataservice->getData('Account', $startPoint);
                 if (false === $data['status']) {
                     return $data['errorMessage'];
                 }
@@ -155,7 +155,7 @@ class UploadService
                 $em->flush();
                 $startPoint = $startPoint + 10;
             }
-            $returnData['sucuess'] = $startPoint." no of accounts uploaded";
+            $returnData['sucuess'] = "accounts uploaded";
         } catch (\Exception $e) {
 
             $returnData['errorMessage'] = $e->getMessage();
@@ -179,10 +179,10 @@ class UploadService
                 return $dataCount;
             }
             
-            $startPoint = 1;
+            $startPoint = 0;
             while($dataCount['count'] > $startPoint) {
 
-                $data = $this->dataservice->getData('Item', $startPoint, $dataCount);
+                $data = $this->dataservice->getData('Item', $startPoint);
                 if (false === $data['status']) {
                     return $data['errorMessage'];
                 }
@@ -269,7 +269,7 @@ class UploadService
                 
                 $em->flush();
             }
-            $returnData['sucuess'] = $startPoint." no of items uploaded";
+            $returnData['sucuess'] = "items uploaded";
         } catch (\Exception $e) {
 
             $returnData['errorMessage'] = $e->getMessage();
@@ -295,7 +295,7 @@ class UploadService
             $startPoint = 1;
             while($dataCount['count'] > $startPoint) {
 
-                $data = $this->dataservice->getData('Vendor', $startPoint, $dataCount);
+                $data = $this->dataservice->getData('Vendor', $startPoint);
                 if (false === $data['status']) {
                     return $data['errorMessage'];
                 }
@@ -391,7 +391,7 @@ class UploadService
                 $em->flush();
                 $startPoint = $startPoint + 10;
             }
-            $returnData['sucuess'] = $startPoint." no of vendors uploaded";
+            $returnData['sucuess'] = "vendors uploaded";
 
         } catch (\Exception $e) {
 
