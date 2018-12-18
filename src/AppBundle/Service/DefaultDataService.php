@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Entity\Auth;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 
-class DefaultService
+class DefaultDataService
 {
     /**
      *  @var array

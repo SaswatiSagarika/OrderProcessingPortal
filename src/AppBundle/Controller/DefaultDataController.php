@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use QuickBooksOnline\API\DataService\DataService;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class DefaultController extends Controller
+class DefaultDataController extends Controller
 {
    /**
      * this file to show the gettoken
@@ -21,9 +21,9 @@ class DefaultController extends Controller
      *
      * @return $response
      */
-    public function indexAction()
-    {
-        $session= new Session();
+   public function indexAction ()
+   {
+        $session = new Session();
 
         $dataService = DataService::Configure(array(
             'auth_mode' => $this->container->getParameter('quickbooks')['authMode'],
@@ -42,7 +42,7 @@ class DefaultController extends Controller
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
-            // replace this example code with whatever you need
+        // open the 
         return $this->render('default/home.html.twig', [
             'url' => $authUrl,
         ]);
