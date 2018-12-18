@@ -1,6 +1,6 @@
 <?php
 /**
- * Controller for product Section.
+ * Controller for order Section.
  *
  * @author Saswati
  *
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +22,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
-class ProductController extends FOSRestController
+class OrderController extends FOSRestController
 {
     /**
      ** REST action which returns get the data to Product.
      *
-     * @Get("/api/products")
+     * @Post("/api/order")
      * @View(statusCode=200)
      *
      * @(
@@ -70,22 +70,22 @@ class ProductController extends FOSRestController
                 throw new NotFoundHttpException($message);
             }
             //sanitizing and checking the params
-            $productData = $this->container->get('app.service.product')->checkDetails($requestContent);
+            $validateData = $this->container->get('app.service.order')->validateOrderDetails($requestContent);
             
-            if (false === $productData['status']) {
-                $message = $this->get('translator')->trans($productData['message']);
+            if (false === $validateData['status']) {
+                $message = $this->get('translator')->trans($validateData['message']);
                 throw new NotFoundHttpException($message);
             }
             
             //getting the result array
-            $productArr = $this->container->get('app.service.product')->getProductResponse($productData);
+            $OrderArr = $this->container->get('app.service.product')->placeOrders($validateData);
             
-            if (false === $productArr['status']) {
-                $message = $this->get('translator')->trans($productArr['message']);
+            if (false === $OrderArr['status']) {
+                $message = $this->get('translator')->trans($OrderArr['message']);
                 throw new NotFoundHttpException($message);
             }
             
-            $resultArray['success'] = $productArr;
+            $resultArray['success'] = $productArrf;
             
         }
         catch (Exception $e) {
