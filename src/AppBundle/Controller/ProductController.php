@@ -58,6 +58,7 @@ class ProductController extends FOSRestController
      *  }
      *)
      * @param Request $request
+     *
      * @return array
      */
     public function getProductDetailAction(Request $request)

@@ -17,14 +17,11 @@ class DefaultDataController extends Controller
      * this file to show the gettoken
      *
      * @Route("/gettoken", name="gettoken")
-     * 
      *
      * @return $response
      */
    public function indexAction ()
    {
-        $session = new Session();
-
         $dataService = DataService::Configure(array(
             'auth_mode' => $this->container->getParameter('quickbooks')['authMode'],
             'ClientID' => $this->container->getParameter('quickbooks')['clientId'],
@@ -35,14 +32,10 @@ class DefaultDataController extends Controller
             'baseUrl' => "Development"
         ));
 
-        if ($session->get('code')) { 
-            $accessTokenObj = $session->get('code');
-        }
-
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
-        // open the 
+        // open the home twig
         return $this->render('default/home.html.twig', [
             'url' => $authUrl,
         ]);

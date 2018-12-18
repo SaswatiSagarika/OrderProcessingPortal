@@ -1,13 +1,13 @@
 services:
-    app.service.default:
-        class: AppBundle\Service\DefaultService
+    app.service.default_data:
+        class: AppBundle\Service\DefaultDataService
         public: true
         arguments: ["@doctrine", "%quickbooks%"]
 
     app.service.upload:
         class: AppBundle\Service\UploadService
         public: true
-        arguments: ["@doctrine", "@app.service.default"]
+        arguments: ["@doctrine", "@app.service.default_data"]
 
     app.service.product:
         class: AppBundle\Service\ProductService

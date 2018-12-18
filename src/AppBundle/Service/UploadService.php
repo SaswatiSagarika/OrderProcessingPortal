@@ -27,7 +27,7 @@ use AppBundle\Entity\Term;
 use AppBundle\Entity\ItemCategoryType;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Product;
-use Doctrine\Bundle\DoctrineBundle\Registry;;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class UploadService
 {
@@ -188,7 +188,7 @@ class UploadService
                 }
                 $items = $data['data'];
 
-                $em = $this->doctrine->getEntityManager();;
+                $em = $this->doctrine->getEntityManager();
                 // get status value
                 $active   = $em->getRepository('AppBundle:Status')->findOneBy(array(
                     'name' => 'ACTIVE'

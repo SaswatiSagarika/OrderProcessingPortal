@@ -6,7 +6,6 @@
  * @author Saswati
  * 
  * @category Service
- *
  */
 namespace AppBundle\Service;
 
@@ -178,10 +177,10 @@ class DefaultDataService
             }
             $token = $dataService->updateOAuth2Token($refreshedAccessTokenObj);
 
-            $authUpdates = $this->addNewUpdates($refreshedAccessTokenObj);
+            $authUpdates = $this->addNewUpdates($token);
 
             if (false === $authUpdates['status']) {
-                return $$authUpdates;
+                return $authUpdates;
             }
             $returnData['status'] = true;
         } catch (\Exception $e) {

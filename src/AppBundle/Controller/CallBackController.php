@@ -20,10 +20,14 @@ class CallBackController extends Controller
 {
     /**
      * @Route("/callback", name="callback")
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request)
     {
-        $session= new Session();
+        $session = new Session();
         
         // Prep Data Services
         $dataService = DataService::Configure(array(
@@ -40,16 +44,17 @@ class CallBackController extends Controller
         $data = $request->server->get('QUERY_STRING');
         //parsing query string
         $parseUrl = $this->container
-                        ->get('app.service.default')
+                        ->get('app.service.default_data')
                         ->parseAuthRedirectUrl($data);
-
+        //getting the accessToken
         $accessTokenObj = $OAuth2LoginHelper
                             ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
         $session->set('code', $accessTokenObj);
 
-         $saveData = $this->container
-            ->get('app.service.default')
+        $saveData = $this->container
+            ->get('app.service.default_data')
             ->addNewUpdates($accessTokenObj);
+        
 
     }
 
