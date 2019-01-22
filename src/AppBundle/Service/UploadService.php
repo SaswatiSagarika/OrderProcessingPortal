@@ -27,6 +27,7 @@ use AppBundle\Entity\Term;
 use AppBundle\Entity\ItemCategoryType;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class UploadService
@@ -372,18 +373,11 @@ class UploadService
                     $vendorRef->setTerm($term);
 
                     //setting CurrencyRef 
-                    $current = $this->addedNewUpdate('CompanyCurrency', $vendor->CurrencyRef, $active);
-                    if (false === $current['status']) {
-                        return $current['errorMessage'];
+                    $currency = $this->addedNewUpdate('CompanyCurrency', $vendor->CurrencyRef, $active);
+                    if (false === $currency['status']) {
+                        return $currency['errorMessage'];
                     }
                     $vendorRef->setCurrency($currency);
-
-                    //setting TaxCoderef 
-                    $taxcode = $this->addedNewUpdate('TaxCode', $vendor->TaxCodeRef, $active);
-                    if (false === $taxcode['status']) {
-                        return $taxcode['errorMessage'];
-                    }
-                    $vendorRef->setTax($taxcode);
 
                     $em->persist($vendorRef);
                 }
@@ -403,6 +397,109 @@ class UploadService
     }
 
     /**
+     * Function to upload the vendor data
+     *
+     * @return array
+     **/
+    public function uploadCustomer()
+    {
+        try {
+            $dataCount = $this->dataservice->getDataCount('Customer');
+            if (false === $dataCount['status']) {
+                return $dataCount;
+            }
+            
+            print_r("inside the upload service. uploading is going on...");
+            $startPoint = 1;
+            while($dataCount['count'] > $startPoint) {
+
+                $data = $this->dataservice->getData('Customer', $startPoint);
+                if (false === $data['status']) {
+                    return $data['errorMessage'];
+                }
+                $customers = $data['data'];
+                $em = $this->doctrine->getEntityManager();
+                // get status value
+                $active   = $em->getRepository('AppBundle:Status')->findOneBy(array(
+                    'name' => 'ACTIVE'
+                ));
+                $inactive = $em->getRepository('AppBundle:Status')->findOneBy(array(
+                    'name' => 'INACTIVE'
+                ));
+
+                foreach ($customers as $customer) {
+                    $customerRef = $em->getRepository('AppBundle:Customer')->findOneBy(array(
+                        'customer' => $customer->Id
+                    ));
+                    if (empty($customerRef)) {
+                        $customerRef = new Customer;
+                    }
+                    $customerRef->setName($customer->FullyQualifiedName)
+                    ->setBalance($customer->Balance)
+                    ->setBalanceWithJobs($customer->BalanceWithJobs)
+                    ->setPreferredDeliveryMethod($customer->PreferredDeliveryMethod)
+                    ->setPrintOnCheckName($customer->PrintOnCheckName)
+                    ->setCustomer($customer->Id);
+
+                    if (!empty($customer->PrimaryPhone)) {
+                        $customerRef->setPhone($customer->PrimaryPhone->FreeFormNumber);
+                    }
+
+                    if (!empty($customer->PrimaryEmailAddr)) {
+                        $customerRef->setEmailAddress($customer->PrimaryEmailAddr->Address);
+                    }
+
+                    if (!empty($customer->WebAddr)) {
+                        $customerRef->setWebAddress($customer->WebAddr->URI);
+                    }
+
+                    if (!empty($customer->BillAddr)) {
+                        $customerRef->setLine1($customer->BillAddr->Line1)
+                        ->setCity($customer->BillAddr->City)
+                        ->setCountrySubDivisionCode($customer->BillAddr->CountrySubDivisionCode)
+                        ->setPostalCode($customer->BillAddr->PostalCode)
+                        ->setLatitude($customer->BillAddr->Lat)
+                        ->setLogitude($customer->BillAddr->Long);
+                    }
+
+                    if (true == $customer->Active) {
+                        $customerRef->setStatus($active);
+                    } else {
+                        $customerRef->setStatus($inactive);
+                    }
+                    //setting CompanyNameref 
+                    $company = $this->addedNewUpdate('Company', $customer->CompanyName, $active);
+                    if (false === $company['status']) {
+                        return $company['errorMessage'];
+                    }
+                    $customerRef->setCompany($company['data']);
+
+                    //setting CurrencyRef 
+                    $currency = $this->addedNewUpdate('CompanyCurrency', $customer->CurrencyRef, $active);
+                    if (false === $currency['status']) {
+                        return $currency['errorMessage'];
+                    }
+                    $customerRef->setCurrency($currency['data']);
+
+                    $em->persist($customerRef);
+                    $em->flush();
+                }
+
+                
+                $startPoint = $startPoint + 10;            
+            }
+            $returnData['sucuess'] = "customers uploaded";
+
+        } catch (\Exception $e) {
+
+            $returnData['errorMessage'] = $e->getMessage();
+
+        }
+
+        return $returnData;
+    }
+
+    /**
      * Function to create the data
      *
      * @return array
@@ -410,7 +507,7 @@ class UploadService
     public function addedNewUpdate($table, $data, $active)
     {
         try {
-            $returnData['status'] = false;
+            $return['status'] = false;
             $em = $this->doctrine->getEntityManager();
 
             //check if the data is present in the table and create new record if data is absent
@@ -419,7 +516,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:TaxCode')->findOneBy(array(
                         'name' => $data
                     ));
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
                         $taxcodeNew = new TaxCode;
                         $taxcodeNew->setStatus($active)
                         ->setCode($data)
@@ -433,7 +530,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:CompanyCurrency')->findOneBy(array(
                         'name' => $data
                     ));
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
                         $currencyNew = new CompanyCurrency;
                         $currencyNew->setStatus($active)
                         ->setCode($data)
@@ -448,7 +545,7 @@ class UploadService
                         'name' => $data
                     ));
 
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
 
                         $termType = new Term;
                         $termType->setStatus($active)
@@ -459,10 +556,12 @@ class UploadService
                     }
                     break;
                 case 'Company':
+
+                    
                     $returnData = $em->getRepository('AppBundle:Company')->findOneBy(array(
-                        'name' => $data
-                    ));
-                    if (empty($returnData) && Null !== $data) {
+                                    'name' => $data
+                        ));
+                    if (!($returnData) && Null !== $data) {
 
                         $companyNew = new Company;
                         $companyNew->setcompanyCode($data)
@@ -476,7 +575,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:Type')->findOneBy(array(
                         'code' => $data
                     ));
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
                         $typeNew = new Type;
                         $typeNew->setDescription($data)
                         ->setCode($data);
@@ -488,7 +587,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:ItemCategoryType')->findOneBy(array(
                         'name' => $data
                     ));
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
                         $catNew = new ItemCategoryType;
                         $catNew->setStatus($active)
                         ->setCode($data)
@@ -501,7 +600,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:Classification')->findOneBy(array(
                         'name' => $data
                     ));
-                    if (empty($returnData) && Null !== $data) {
+                    if (!($returnData) && Null !== $data) {
                         $catNew = new Classification;
                         $catNew->setStatus($active)
                         ->setCode($data)
@@ -514,7 +613,7 @@ class UploadService
                     $returnData = $em->getRepository('AppBundle:AccountType')->findOneBy(array(
                         'name' => $data
                     ));
-                    if (empty($returnData)) {
+                    if (!($returnData)) {
                         $accountType = new AccountType;
                         $accountType->setStatus($active)
                         ->setName($data['type'])
@@ -529,7 +628,7 @@ class UploadService
                         'name' => $data
                     ));
 
-                    if (empty($returnData)) {
+                    if (!($returnData)) {
                         $accountSubType = new SubAccountType;
                         $accountSubType->setStatus($active)
                         ->setClassification($data['classification'])
@@ -547,14 +646,15 @@ class UploadService
                     break;
             }
             $em->flush();
-            $returnData['status'] = true;
+            $return['status'] = true;
+            $return['data'] = $returnData;
         } catch (\Exception $e) {
 
-            $returnData['errorMessage'] = $e->getMessage();
+            $return['errorMessage'] = $e->getMessage();
             
         }
         
-        return $returnData;
+        return $return;
     }
     
 }

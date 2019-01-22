@@ -31,7 +31,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
@@ -45,7 +45,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @ORM\Column(name="description", type="string", length=45, nullable=true)
      */
     private $description;
 
@@ -58,7 +58,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="level", type="string", length=255, nullable=true)
+     * @ORM\Column(name="level", type="string", length=45, nullable=true)
      */
     private $level;
 
@@ -79,9 +79,16 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="unit_price", type="string", length=255, nullable=true)
+     * @ORM\Column(name="unit_price", type="string", length=45, nullable=true)
      */
     private $unit_price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=60, nullable=true)
+     */
+    private $image;
 
     /**
      * @ORM\ManyToOne(targetEntity="Type")
@@ -132,23 +139,23 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="sales_information", type="string", length=255, nullable=true)
+     * @ORM\Column(name="sales_information", type="string", length=45, nullable=true)
      */
     private $sales_information;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="purchasing_information", type="string", length=255, nullable=true)
+     * @ORM\Column(name="purchasing_information", type="string", length=45, nullable=true)
      */
     private $purchasing_information;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="cost", type="integer", nullable=true)
+     * @ORM\Column(name="product", type="integer", nullable=true)
      */
-    private $cost;
+    private $product;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account")
@@ -366,6 +373,30 @@ class Product
     }
 
     /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Product
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * Set type
      *
      * @param \AppBundle\Entity\Type $type
@@ -572,27 +603,27 @@ class Product
     }
 
     /**
-     * Set cost
+     * Set product
      *
-     * @param integer $cost
+     * @param integer $product
      *
      * @return Product
      */
-    public function setCost($cost)
+    public function setProduct($product)
     {
-        $this->cost = $cost;
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * Get cost
+     * Get product
      *
      * @return int
      */
-    public function getCost()
+    public function getProduct()
     {
-        return $this->cost;
+        return $this->product;
     }
 
     /**

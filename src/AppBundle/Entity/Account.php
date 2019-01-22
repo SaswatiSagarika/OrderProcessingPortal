@@ -31,14 +31,14 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @ORM\Column(name="description", type="string", length=45, nullable=true)
      */
     private $description;
 
@@ -51,21 +51,21 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="account_number", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="account_number", type="string", length=45, nullable=true, unique=true)
      */
     private $account_number;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="account_id", type="string", length=255, unique=true)
+     * @ORM\Column(name="account_id", type="string", length=45, unique=true)
      */
     private $accountId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="credit_balance", type="string", length=255, nullable=true)
+     * @ORM\Column(name="credit_balance", type="string", length=45, nullable=true)
      */
     private $creditBalance;
 
@@ -90,7 +90,7 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="sub_account", type="string", length=255, nullable=true)
+     * @ORM\Column(name="sub_account", type="string", length=45, nullable=true)
      */
     private $subAccount;
 
@@ -109,14 +109,14 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="sparse", type="string", length=255, nullable=true, nullable=true)
+     * @ORM\Column(name="sparse", type="string", length=45, nullable=true, nullable=true)
      */
     private $sparse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=true,  nullable=true)
+     * @ORM\Column(name="domain", type="string", length=45, nullable=true,  nullable=true)
      */
     private $domain;
 
@@ -509,12 +509,14 @@ class Account
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
+    
     /**
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
 }

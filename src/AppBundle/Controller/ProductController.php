@@ -64,26 +64,27 @@ class ProductController extends FOSRestController
     public function getProductDetailAction(Request $request)
     {
         try {
+
             $requestContent = json_decode($request->getContent(), true);
+
+            $translator = $this->get('translator');
             // if content is not provided.
             if (!$requestContent) {
-                $message = $this->get('translator')->trans('api.missing_parameters');
-                throw new NotFoundHttpException($message);
+                throw new NotFoundHttpException($translator->trans('api.missing_parameters'));
             }
+            $productService = $this->get('app.service.product');
+            $validateService = $this->get('app.service.validate_data');
             //sanitizing and checking the params
-            $productData = $this->container->get('app.service.product')->checkDetails($requestContent);
+            $productData = $validateService->checkDetails($requestContent);
             
             if (false === $productData['status']) {
-                $message = $this->get('translator')->trans($productData['message']);
-                throw new NotFoundHttpException($message);
+                throw new NotFoundHttpException($translator->trans($productData['message']));
             }
             
             //getting the result array
-            $productArr = $this->container->get('app.service.product')->getProductResponse($productData);
-            
+            $productArr = $productService->getProductResponse($productData);
             if (false === $productArr['status']) {
-                $message = $this->get('translator')->trans($productArr['message']);
-                throw new NotFoundHttpException($message);
+                throw new NotFoundHttpException($translator->trans($productArr['message']));
             }
             
             $resultArray['success'] = $productArr;
@@ -92,7 +93,8 @@ class ProductController extends FOSRestController
         catch (Exception $e) {
             $resultArray['error'] = $e->getMessage();
         }
-        return $resultArray;
+        
+        return new JsonResponse($resultArray);
     }
     
 }

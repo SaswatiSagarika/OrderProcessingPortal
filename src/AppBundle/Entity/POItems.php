@@ -43,15 +43,9 @@ class POItems
     /**
      * @var string
      *
-     * @ORM\Column(name="item_price", type="string", length=255)
+     * @ORM\Column(name="item_price", type="string", length=45)
      */
     private $itemPrice;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=false)
-     */
-    private $taxCode;
 
     /**
      * @var int
@@ -63,21 +57,14 @@ class POItems
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=45)
      */
     private $status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bill_status", type="string", length=255)
-     */
-    private $billStatus;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="taxable_amount", type="string", length=255)
+     * @ORM\Column(name="taxable_amount", type="string", length=45)
      */
     private $taxableAmount;
 
@@ -177,30 +164,6 @@ class POItems
     }
 
     /**
-     * Set taxCode
-     *
-     * @param \AppBundle\Entity\TaxCode $taxCode
-     *
-     * @return POItems
-     */
-    public function setTaxCode(\AppBundle\Entity\TaxCode$taxCode)
-    {
-        $this->taxCode = $taxCode;
-
-        return $this;
-    }
-
-    /**
-     * Get taxCode
-     *
-     * @return \AppBundle\Entity\TaxCode
-     */
-    public function getTaxCode()
-    {
-        return $this->taxCode;
-    }
-
-    /**
      * Set quantity
      *
      * @param integer $quantity
@@ -227,11 +190,11 @@ class POItems
     /**
      * Set status
      *
-     * @param \AppBundle\Entity\Status $status
+     * @param $status
      *
      * @return POItems
      */
-    public function setStatus(\AppBundle\Entity\Status $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -241,35 +204,11 @@ class POItems
     /**
      * Get status
      *
-     * @return \AppBundle\Entity\Status
+     * @return Status
      */
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set billStatus
-     *
-     * @param string $billStatus
-     *
-     * @return POItems
-     */
-    public function setBillStatus($billStatus)
-    {
-        $this->billStatus = $billStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get billStatus
-     *
-     * @return string
-     */
-    public function getBillStatus()
-    {
-        return $this->billStatus;
     }
 
     /**
@@ -350,13 +289,14 @@ class POItems
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     /**
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
   
 }

@@ -30,14 +30,13 @@ class TestApiService
         try {
             //create a new cURL resource
             $ch = curl_init();
-            
             // set URL and other appropriate options
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $verb);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
+            curl_setopt($ch, CURLOPT_TIMEOUT, 90);
             
             // grab URL and pass it to the browser
             $returnData = curl_exec($ch);

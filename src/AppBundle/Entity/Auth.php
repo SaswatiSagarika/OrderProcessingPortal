@@ -37,14 +37,14 @@ class Auth
     /**
      * @var string
      *
-     * @ORM\Column(name="realm_id", type="string", length=255, unique=true)
+     * @ORM\Column(name="realm_id", type="string", length=55, unique=true)
      */
     private $realm;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="refresh_token", type="string", length=255, unique=true)
+     * @ORM\Column(name="refresh_token", type="string", length=55, unique=true)
      */
     private $refreshToken;
     
@@ -115,7 +115,7 @@ class Auth
      *
      * @return string
      */
-    public function getRrealm()
+    public function getRealm()
     {
         return $this->realm;
     }
@@ -198,13 +198,15 @@ class Auth
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        
+        
     }
     /**
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdateTime = new \DateTime();
     }
     
     /**

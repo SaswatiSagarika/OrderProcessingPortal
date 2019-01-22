@@ -16,7 +16,9 @@ use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 use QuickBooksOnline\API\Facades\Account;
 use QuickBooksOnline\API\Facades\Item;
 use QuickBooksOnline\API\Facades\Vendor;
+use QuickBooksOnline\API\Facades\Invoice;
 use QuickBooksOnline\API\Facades\CompanyInfo;
+use QuickBooksOnline\API\Facades\PurchaseOrder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Entity\Auth;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
@@ -53,9 +55,71 @@ class DefaultDataService
      *
      * @return array
      **/
-    public function getDataCount($table)
+    public function createInvoice($param)
     {
         try {
+            $returnData['status'] = false;
+            $dataService = $this->getDataService();
+            $invoiceToCreate = Invoice::Create($param);
+            $resultObj = $dataService->Add($invoiceToCreate);
+
+            $error = $dataService->getLastError();
+            if ($error) {
+                $returnData['statusCode'] = $error->getHttpStatusCode();
+                $returnData['helperMessage'] = $error->getOAuthHelperError();
+                $returnData['responseMessage'] = $error->getResponseBody();
+            }
+            $returnData['status'] = true; 
+            $returnData['message'] = $resultObj;
+        }
+        catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        return $returnData;
+        
+    }
+
+    /**
+     * Function to set new po in quickbooks
+     *
+     * @param string $table  
+     *
+     * @return array
+     **/
+    public function createPurchaseOrder($param)
+    {
+        try {
+            $returnData['status'] = false;
+            $dataService = $this->getDataService();
+            $invoiceToCreate = PurchaseOrder::Create($param);
+            $resultObj = $dataService->Add($invoiceToCreate);
+
+            $error = $dataService->getLastError();
+            if ($error) {
+                $returnData['statusCode'] = $error->getHttpStatusCode();
+                $returnData['helperMessage'] = $error->getOAuthHelperError();
+                $returnData['responseMessage'] = $error->getResponseBody();
+            }
+            $returnData['status'] = true; 
+            $returnData['message'] = $resultObj;
+        }
+        catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        return $returnData;
+        
+    }
+
+    /**
+     * Function to get datacount from quickbooks based on table name
+     *
+     * @param string $table  
+     *
+     * @return array
+     **/
+    public function getDataCount($table)
+    {
+        try { 
             $returnData['status'] = false;
             $dataService = $this->getDataService();
 
@@ -88,36 +152,6 @@ class DefaultDataService
         );
     }
 
-    /**
-     * Private function to create new records in database
-     *
-     * @param array $params  
-     *
-     * @return array
-     */
-    public function addNewUpdates($params)
-    {
-        try {
-            $returnData['status'] = false;
-            $em = $this->doctrine->getEntityManager();
-
-            //creating records in Auth table
-            $auth = new Auth;
-            $auth->setAccessToken($params->getAccessToken())
-            ->setRealm($params->getrealmID())
-            ->setRefreshToken($params->getRefreshToken());
-
-            $em->persist($auth);
-            $em->flush();
-
-            $returnData['status'] = true;
-            $returnData['message'] = "new AccessToken is added. Enjoy working on Quickbooks";
-        } catch (\Exception $e) {
-            $returnData['errorMessage'] = $e->getMessage();
-        }
-        return $returnData;
-    }
-
      /**
      * Private function to get records from database
      *
@@ -133,10 +167,11 @@ class DefaultDataService
             $returnData['status'] = false;
             $dataService = $this->getDataService();
             if ( 'Item' === $table) {
-                $statement = "SELECT * FROM  Item WHERE Type='Inventory' STARTPOSITION 1 MAXRESULTS 10";
+                $statement = "SELECT * FROM  Item WHERE Type='Inventory' STARTPOSITION ".$startPoint." MAXRESULTS 10";
             } else {
-                $statement = "SELECT * FROM ".$table ."STARTPOSITION".$startPoint."MAXRESULTS 10";
+                $statement = "SELECT * FROM ".$table ." STARTPOSITION ".$startPoint." MAXRESULTS 10";
             }
+            //getting the records from the QB database
             $returnData['data'] = $dataService->Query($statement);
              $returnData['status'] = true;
         } catch (\Exception $e) {
@@ -156,32 +191,28 @@ class DefaultDataService
 
             $returnData['status'] = false;
             $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
-
             $dataService = DataService::Configure(array(
                  'auth_mode' => $this->parameter['authMode'],
                  'ClientID' => $this->parameter['clientId'],
                  'ClientSecret' => $this->parameter['clientSercret'],
                  'refreshTokenKey' => $auth[0]->getRefreshToken(),
-                 'QBORealmID' => $auth[0]->getRrealm(),
+                 'QBORealmID' => $auth[0]->getRealm(),
                  'baseUrl' => "Development/Production"
             ));
-            $error = $OAuth2LoginHelper->getLastError();
             
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
+
+            $error = $OAuth2LoginHelper->getLastError();
             if ($error) {
                 $returnData['statusCode']      = $error->getHttpStatusCode();
                 $returnData['helperMessage']   = $error->getOAuthHelperError();
                 $returnData['responseMessage'] = $error->getResponseBody();
                 return $returnData;
             }
+
             $token = $dataService->updateOAuth2Token($refreshedAccessTokenObj);
-
-            $authUpdates = $this->addNewUpdates($token);
-
-            if (false === $authUpdates['status']) {
-                return $authUpdates;
-            }
+            $returnData['token'] = $token;
             $returnData['status'] = true;
         } catch (\Exception $e) {
             $returnData['errorMessage'] = $e->getMessage();
@@ -196,32 +227,34 @@ class DefaultDataService
      */
     public function getDataService() {
         try {
-            $auth = $this->doctrine->getRepository('AppBundle:Auth')->findById(1);
-
+            $auth = $this->doctrine->getRepository('AppBundle:Auth')->find(1);
             // Prep Data Services            
             $dataService     = DataService::Configure(array(
                 'auth_mode' => $this->parameter['authMode'],
                 'ClientID' => $this->parameter['clientId'],
                 'ClientSecret' => $this->parameter['clientSercret'],
-                'accessTokenKey' => $auth[0]->getAccessToken(),
-                'refreshTokenKey' => $auth[0]->getRefreshToken(),
-                'QBORealmID' => $auth[0]->getRrealm(),
+                'accessTokenKey' => $auth->getAccessToken(),
+                'refreshTokenKey' => $auth->getRefreshToken(),
+                'QBORealmID' => $auth->getRealm(),
                 'baseUrl' => "Development"
             ));
 
-            $error = $dataService->getLastError();
-            if ($error) {
-                $returnData['statusCode']      = $error->getHttpStatusCode();
-                $returnData['helperMessage']   = $error->getOAuthHelperError();
-                $returnData['responseMessage'] = $error->getResponseBody();
-                //if accesstoken is expired
-                $returnData['updateMessage']   = $this->refreshOauthtoken();
-                //getting the dataservice again
-                $dataService = $this->getDataService();
+            $count = $dataService->Query("SELECT COUNT" . "(" . "*" . ")" . " FROM Account");
+            
+            if(!isset($count)){
                 
-            }            
+                $refreshAccessToken   = $this->refreshOauthtoken();
+                //getting the dataservice again
+                if (false === $refreshAccessToken['status']) {
+                    
+                    return $refreshAccessToken;
+                }
+
+                $dataService = $this->getDataService();
+            }
         }
         catch (\Exception $e) {
+            
             $returnData['errorMessage'] = $e->getMessage();
             
             //if accesstoken is expired

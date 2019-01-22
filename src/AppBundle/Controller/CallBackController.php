@@ -28,14 +28,14 @@ class CallBackController extends Controller
     public function indexAction(Request $request)
     {
         $session = new Session();
-        
+        $param = $this->container->getParameter('quickbooks');
         // Prep Data Services
         $dataService = DataService::Configure(array(
-            'auth_mode' => $this->container->getParameter('quickbooks')['authMode'],
-            'ClientID' => $this->container->getParameter('quickbooks')['clientId'],
-            'ClientSecret' =>  $this->container->getParameter('quickbooks')['clientSercret'],
-            'RedirectURI' => $this->container->getParameter('quickbooks')['redirectUrl'],
-            'scope' => $this->container->getParameter('quickbooks')['scope'],
+            'auth_mode' => $param['authMode'],
+            'ClientID' => $param['clientId'],
+            'ClientSecret' =>  $param['clientSercret'],
+            'RedirectURI' => $param['redirectUrl'],
+            'scope' => $param['scope'],
             'baseUrl' => "development",        
         ));
 
@@ -51,7 +51,7 @@ class CallBackController extends Controller
                             ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
         $session->set('code', $accessTokenObj);
 
-        $saveData = $this->container
+        $this->container
             ->get('app.service.default_data')
             ->addNewUpdates($accessTokenObj);
         

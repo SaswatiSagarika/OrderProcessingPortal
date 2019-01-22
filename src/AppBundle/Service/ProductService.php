@@ -29,53 +29,7 @@ class ProductService
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
-    }
-    
-    /**
-     * function to sanitize the data
-     *
-     * @param array $arr
-     *
-     * @return array
-     */
-    public function sanitarize($arr)
-    {
-        foreach ($arr as $key => $value) {
-            $returnArr[$key] = trim(htmlspecialchars($value));
-        }
-        return $returnArr;
-    }
-    /**
-     * function to validate the data
-     *
-     * @param array $param
-     *
-     * @return array
-     */
-    public function checkDetails($param)
-    {
-        try {
-            $returnData['status'] = false;
-            $param['name']        = (isset($param['name'])) ? $param['name'] : "";
-            $param['category']    = (isset($param['category'])) ? $param['category'] : "";
-            
-            //santizing the data
-            $returnData = $this->sanitarize($param);
-            
-            if (!isset($param['name']) || !isset($param['category'])) {
-                $returnData['message'] = 'api.missing_parameters';
-                return $returnData;
-            }
-            
-            $returnData['status'] = true;
-            
-        }
-        catch (\Exception $e) {
-            $returnData['errorMessage'] = $e->getMessage();
-        }
-        return $returnData;
-    }
-    
+    }  
     
     /**
      * Private function to generate and sms the otp
@@ -84,32 +38,40 @@ class ProductService
      *
      * @return array
      */
-    public function getProductResponse($param)
+    public function getProductResponse($param = array())
     {
         try {
             $returnData['status'] = false;
-            
             //seraching the product based on params
             $products       = $this->doctrine->getRepository('AppBundle:Product')->getProducts($param);
             $resultArray    = array();
             $productDetails = array();
+            $categorytDetails = array();
             $i              = 0;
+            $j              = 0;
             foreach ($products as $product) {
 
                 //the productDetails
-                $productDetails['Sku']              = (null !== $product['sku']) ? $product['sku'] : '';
-                $productDetails['Name']             = (null !== $product['name']) ? $product['name'] : '';
-                $productDetails['Description']      = (null !== $product['description']) ? $product['description'] : '';
-                $productDetails['level']            = (null !== $product['level']) ? $product['level'] : '';
-                $productDetails['taxable']          = (null !== $product['taxable']) ? $product['taxable'] : '';
-                $productDetails['unit_price']       = (null !== $product['unit_price']) ? $product['unit_price'] : '';
-                $productDetails['quantity_on_hand'] = (null !== $product['quantity_on_hand']) ? $product['quantity_on_hand'] : '';
-                $productDetails['type']             = (null !== $product['type']) ? $product['type'] : '';
-                $productDetails['reorder_point']    = (null !== $product['reorder_point']) ? $product['reorder_point'] : '';
+                $productDetails['sku']              = $product['sku'];
+                $productDetails['name']             = $product['name'];
+                $productDetails['description']      = $product['description'];
+                $productDetails['level']            = $product['level'];
+                $productDetails['taxable']          = $product['taxable'] ;
+                $productDetails['unit_price']       = $product['unit_price'];
+                $productDetails['quantity_on_hand'] = $product['quantity_on_hand'];
+                $productDetails['type']             = $product['type'];
+                $productDetails['reorder_point']    = $product['reorder_point'];
+                $productDetails['image']            = $product['image'];
+                $productDetails['product_id']       = $product['product'];
                 
+
+                if (! in_array($product['category'], $categorytDetails)) {
+                    array_push($categorytDetails, $product['category']);
+                }
                 $resultArray['product'][$i] = $productDetails;
                 $i++;
             }
+            $resultArray['filter']['category'] = $categorytDetails;
             //In case no records found
             if (!$resultArray) {
                 $returnData['message'] = 'api.empty';

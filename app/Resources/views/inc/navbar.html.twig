@@ -12,19 +12,26 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class=""><a href="#">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Type<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Inventory</a></li>
-            <li><a href="#">non-Inventory</a></li>
-            <li><a href="#">Service</a></li>
-          </ul>
-        </li>
         <li><a href="#"></a></li>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        {% for category in categories %}
+          <a class="dropdown-item" href="#">{{category}}</a>
+        {% endfor %}
+        </div>
+      </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Cart <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+        <li>
+            <input id="shopping-cart" type="hidden" name="product-cart-list">
+          <a id="cart" href="#edit">Cart <span class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#myModal"  data-backdrop="static" data-keyboard="false"></span></a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
+
+

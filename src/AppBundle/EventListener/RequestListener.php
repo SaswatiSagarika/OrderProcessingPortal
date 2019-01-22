@@ -34,7 +34,7 @@ class RequestListener
      *
      * @return void
      */
-    public function __construct(AuthenticateApiService $authservice, TranslatorInterface $translator) {
+    public function __construct(AuthenticateApiService $authservice, $translator) {
         $this->authservice = $authservice;
         $this->translator = $translator;
     }
@@ -46,11 +46,7 @@ class RequestListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {    
-        
         $request = $event->getRequest();
-        if ('/api/testform' === $request->getPathInfo()) {
-            return true;
-        }
         $response = $this->authservice->authenticateRequest($request);
         
         if(true !== $response['status']){
@@ -58,6 +54,8 @@ class RequestListener
             $responseData['error'] = $this->translator->trans($response['errorMessage']['message']);
             $event->setResponse(new JsonResponse($responseData));
         }
+        
         return; 
     }
+
 }

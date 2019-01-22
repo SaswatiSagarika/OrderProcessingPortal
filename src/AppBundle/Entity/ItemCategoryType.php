@@ -31,14 +31,14 @@ class ItemCategoryType
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     * @ORM\Column(name="type", type="string", length=45, nullable=true)
      */
     private $type;
 
@@ -205,7 +205,7 @@ class ItemCategoryType
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     
 }

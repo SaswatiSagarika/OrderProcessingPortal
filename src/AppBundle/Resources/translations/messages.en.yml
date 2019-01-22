@@ -14,3 +14,5 @@ empty: Couldn't get reocrds for the given filters!
 invalid_json: Invalid JSON
 invalid_content_type: Invalid Content type
 invalid_authorization: Invalid Authorization.
+invalid_data: Some data is missing.
+missing_account: please provide a valid Account.

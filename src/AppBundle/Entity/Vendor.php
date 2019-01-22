@@ -30,7 +30,7 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
@@ -49,29 +49,23 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phone", type="string", length=45, nullable=true)
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email_address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email_address", type="string", length=45, nullable=true)
      */
     private $emailAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="web_address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="web_address", type="string", length=45, nullable=true)
      */
     private $webAddress;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=true)
-     */
-    private $tax;
 
     /**
      * @ORM\ManyToOne(targetEntity="Term")
@@ -89,7 +83,7 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="account_number", type="string", length=255, nullable=true)
+     * @ORM\Column(name="account_number", type="string", length=45, nullable=true)
      */
     private $accountNumber;
 
@@ -109,70 +103,70 @@ class Vendor
     /**
      * @var string
      *
-     * @ORM\Column(name="line1", type="string", length=255, nullable=true)
+     * @ORM\Column(name="line1", type="string", length=45, nullable=true)
      */
     private $line1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="line2", type="string", length=255, nullable=true)
+     * @ORM\Column(name="line2", type="string", length=45, nullable=true)
      */
     private $line2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="line3", type="string", length=255, nullable=true)
+     * @ORM\Column(name="line3", type="string", length=45, nullable=true)
      */
     private $line3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     * @ORM\Column(name="city", type="string", length=45, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="country_sub_division_code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="country_sub_division_code", type="string", length=45, nullable=true)
      */
     private $countrySubDivisionCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="postal_code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="postal_code", type="string", length=45, nullable=true)
      */
     private $postalCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     * @ORM\Column(name="country", type="string", length=45, nullable=true)
      */
     private $country;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="latitude", type="string", length=255, nullable=true)
+     * @ORM\Column(name="latitude", type="string", length=45, nullable=true)
      */
     private $latitude;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor_id", type="string", length=255)
+     * @ORM\Column(name="vendor_id", type="string", length=45)
      */
     private $vendor;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="logitude", type="string", length=255, nullable=true)
+     * @ORM\Column(name="logitude", type="string", length=45, nullable=true)
      */
     private $logitude;
 
@@ -377,30 +371,6 @@ class Vendor
     public function getWebAddress()
     {
         return $this->webAddress;
-    }
-
-    /**
-     * Set tax
-     *
-     * @param \AppBundle\Entity\Tax $tax
-     *
-     * @return Vendor
-     */
-    public function setTax($tax)
-    {
-        $this->tax = $tax;
-
-        return $this;
-    }
-
-    /**
-     * Get tax
-     *
-     * @return \AppBundle\Entity\Tax
-     */
-    public function getTax()
-    {
-        return $this->tax;
     }
 
     /**
@@ -799,7 +769,7 @@ class Vendor
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
 }
 

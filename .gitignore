@@ -13,6 +13,6 @@ var/logs/.gitkeep
 var/sessions/.gitkeep
 var/SymfonyRequirements.php
 /vendor/
-/web/
+/web/bundles
 .idea/*
 /spec/

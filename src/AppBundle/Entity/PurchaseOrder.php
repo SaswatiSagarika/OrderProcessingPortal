@@ -36,10 +36,17 @@ class PurchaseOrder
     private $poId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vendor")
-     * @ORM\JoinColumn(name="vendor", referencedColumnName="id", nullable=false)
+     * @var int
+     *
+     * @ORM\Column(name="QB_id", type="integer")
      */
-    private $vendor;
+    private $QBId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Customer")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     */
+    private $customer;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account")
@@ -50,14 +57,14 @@ class PurchaseOrder
     /**
      * @var string
      *
-     * @ORM\Column(name="total_amt", type="string", length=255, nullable=false)
+     * @ORM\Column(name="total_amt", type="string", length=45, nullable=false)
      */
     private $totalAmt;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="string", length=255, nullable=false)
+     * @ORM\Column(name="notes", type="string", length=45, nullable=false)
      */
     private $notes;
 
@@ -77,7 +84,7 @@ class PurchaseOrder
     /**
      * @var string
      *
-     * @ORM\Column(name="po_status", type="string", length=255)
+     * @ORM\Column(name="po_status", type="string", length=45)
      */
     private $poStatus;
 
@@ -86,13 +93,6 @@ class PurchaseOrder
      * @ORM\JoinColumn(name="currency_id", referencedColumnName="id", nullable=false)
      */
     private $currency;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="exchange_rate", type="string", length=255)
-     */
-    private $exchangeRate;
 
     /**
      * @var \DateTime
@@ -107,7 +107,6 @@ class PurchaseOrder
      * @ORM\Column(name="last_modified_date", type="datetime")
      */
     private $lastUpdatedTime;
-
 
     /**
      * Get id
@@ -134,6 +133,30 @@ class PurchaseOrder
     }
 
     /**
+     * Get QBId
+     *
+     * @return int
+     */
+    public function getQBId()
+    {
+        return $this->QBId;
+    }
+
+    /**
+     * Set QBId
+     *
+     * @param integer $QBId
+     *
+     * @return PurchaseOrder
+     */
+    public function setQBId($QBId)
+    {
+        $this->QBId = $QBId;
+
+        return $this;
+    }
+
+    /**
      * Get poId
      *
      * @return int
@@ -144,27 +167,27 @@ class PurchaseOrder
     }
 
     /**
-     * Set vendor
+     * Set customer
      *
-     * @param \AppBundle\Entity\Vendor  $vendor
+     * @param \AppBundle\Entity\customer  $customer
      *
      * @return PurchaseOrder
      */
-    public function setVendor(\AppBundle\Entity\Vendor $vendor)
+    public function setCustomer(\AppBundle\Entity\Customer $customer)
     {
-        $this->vendor = $vendor;
+        $this->customer = $customer;
 
         return $this;
     }
 
     /**
-     * Get vendor
+     * Get customer
      *
-     * @return \AppBundle\Entity\Vendor 
+     * @return \AppBundle\Entity\Customer 
      */
-    public function getVendor()
+    public function getCustomer()
     {
-        return $this->vendor;
+        return $this->customer;
     }
 
     /**
@@ -335,30 +358,6 @@ class PurchaseOrder
     {
         return $this->currency;
     }
-
-    /**
-     * Set exchangeRate
-     *
-     * @param string $exchangeRate
-     *
-     * @return PurchaseOrder
-     */
-    public function setExchangeRate($exchangeRate)
-    {
-        $this->exchangeRate = $exchangeRate;
-
-        return $this;
-    }
-
-    /**
-     * Get exchangeRate
-     *
-     * @return string
-     */
-    public function getExchangeRate()
-    {
-        return $this->exchangeRate;
-    }
     
     /**
      * Set createdDate
@@ -414,13 +413,14 @@ class PurchaseOrder
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     /**
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
   
 }

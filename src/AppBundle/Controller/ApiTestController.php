@@ -25,7 +25,7 @@ class ApiTestController extends Controller
     /**
      * function to call the api from symfony form
      *
-     * @Route("/api/testform", name="form")
+     * @Route("/apitest", name="form")
      *
      * @param Request $request
      *
@@ -56,8 +56,6 @@ class ApiTestController extends Controller
             ;
             return new Response($response);
         }
-
-        //
         $response = new Response(
           $this->renderView('default/test.html.twig',['form' => $form->createView()]),
           200

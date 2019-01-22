@@ -31,14 +31,14 @@ class TaxCode
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=45)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     * @ORM\Column(name="code", type="string", length=45, unique=true)
      */
     private $code;
 
@@ -236,7 +236,7 @@ class TaxCode
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     
 }

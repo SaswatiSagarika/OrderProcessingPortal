@@ -16,15 +16,18 @@
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
         </testsuite>
+        <testsuite name="command">
+            <file>./Tests/AppBundle/Command/UpdateAccountCommandTest.php</file>
+            <file>./Tests/AppBundle/Command/UpdateProductCommandTest.php</file>
+            <file>./Tests/AppBundle/Command/UpdateVendorCommandTest.php</file>
+        </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <directory>src/*Bundle/Resources</directory>
-                <directory>src/*/*Bundle/Resources</directory>
-                <directory>src/*/Bundle/*Bundle/Resources</directory>
+                <directory>src/AppBundle/Resources</directory>
             </exclude>
         </whitelist>
     </filter>

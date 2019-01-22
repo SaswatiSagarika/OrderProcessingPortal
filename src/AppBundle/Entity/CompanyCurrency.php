@@ -38,7 +38,7 @@ class CompanyCurrency
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
@@ -51,14 +51,14 @@ class CompanyCurrency
     /**
      * @var string
      *
-     * @ORM\Column(name="sparse", type="string", length=255, nullable=true)
+     * @ORM\Column(name="sparse", type="string", length=45, nullable=true)
      */
     private $sparse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=true)
+     * @ORM\Column(name="domain", type="string", length=45, nullable=true)
      */
     private $domain;
 
@@ -266,7 +266,7 @@ class CompanyCurrency
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
 }
 

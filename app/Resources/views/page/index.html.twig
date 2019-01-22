@@ -1,29 +1,54 @@
 {% extends 'base.html.twig' %}
-
- {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
- {% endblock %}
+  {% block stylesheets %}
+    <link rel="stylesheet" href="/css/home.css" />
+  {% endblock %}
 {% block body %}
 
-    <div class="row">
-        {% for image in images %}
+    <div class="row product-list">
+    <div class="alert-message" id="message">
+     
+    </div>
+        {% for product in products %}
         <div class="col-sm-4 col-md-3">
+          <form class="form-item">
             <div class="thumbnail">
-              <div class="caption text-center" onclick="location.href='https://flow.microsoft.com/en-us/connectors/shared_slack/slack/'">
-                <div class="position-relative">
-                  <a href="#" class="">
-                    <img src="/images/{{ image }}" alt="...">
-                </a>
+              <div class="caption text-center ">
+                <div class="position-relative" style="vertical-align:middle; text-align:center">
+                  <a href="#" class="product-image">
+                    <img src="{{product.image}}" class="thumbnail-image" id="{{product.sku}}" data-toggle="modal" data-target="#myProductModal"  data-backdrop="static" data-keyboard="false">
+                  </a>
+                  <p id="name">{{product.name}}</p>
+                  
+                  <input class="product_code_{{product.sku}}" type="hidden" value="{{product.sku}}">
+                  <input class="product_id_{{product.sku}}" type="hidden" value="{{product.product_id}}">
+                  <input class="product_name_{{product.sku}}" type="hidden" value="{{product.name}}">
+                  <input class="product_price_{{product.sku}}" type="hidden" value="{{product.unit_price}}">
                 </div>               
               </div>
               <div class="caption card-footer text-center">
-                <button type="button" class="btn btn-danger btn-block">Buy Now<span class="glyphicon glyphicon-download-alt"> </button>
-                <button type="button" class="btn btn-warning btn-block">Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></button>
+                <div>
+                  
+                    <a class='btn qtyminus' id="qtyminus" field='quantity_{{product.sku}}' >-</a>
+                    <input type='number' name='quantity_{{product.sku}}' value='0' class='qty_{{product.sku}}' style="width:30px;text-align: center;" min="1" max="{{product.quantity_on_hand}}"/>
+                    <a class='btn qtyplus' id="qtyminus" field='quantity_{{product.sku}}'>+</a>
+                  
+                </div>
+                <div>
+                  <button id="{{product.sku}}" type="button" class="btn btn-warning add-to-cart">Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></button>
+                </div>
               </div>
             </div>
+          </form>
         </div>
         {% endfor %}
     </div>
 
+    <div class="row cart">
+    </div>
 
+
+
+{% endblock %}
+{% block javascripts %}
+<script src="/js/main.js"></script>
 {% endblock %}

@@ -41,32 +41,33 @@ class AuthenticateApiService
     public function authenticateRequest($request)
     {
         try {
-            $returnData['status'] = false;
-            
+            $status = false;
+
+            if (!strpos($request->getPathInfo(), 'api/') && $this->isOpenRoute($request)) {
+                $returnData['status']= true;
+                return $returnData;
+            }
             if (!json_decode($content = $request->getContent(), true)) {
-                $returnData['errorMessage'] = ErrorConstants::$apiErrors['INVALIDJSON'];
-                return $returnData;
+                $message = ErrorConstants::$apiErrors['INVALIDJSON'];
+                throw new Exception("$message");
                 
             }
-            
-            // get the request headers
-            $headers = $request->headers;
-            $auth    = $headers->get('Authorization');
-            $hash    = hash_hmac('sha1', $content, $this->hash_signature_key);
-            // Comparing Request Hash with Server auth Hash.
-            if ($hash !== $auth) {
-                
-                $returnData['errorMessage'] = ErrorConstants::$apiErrors['INVALIDAUTHORIZATION'];
-                return $returnData;
-            }
-            
-            $returnData['status'] = true;
+           
+            $status = true;
             
         }
         catch (\Exception $e) {
             $returnData['errorMessage'] = $e->getMessage();
         }
-        
+        $returnData['status']= $status;
+
         return $returnData;
+    }
+
+    /**
+    */
+    public function isOpenRoute($request)
+    {
+        return (!empty($request->getPathInfo())) ? 1 : 0;
     }
 }

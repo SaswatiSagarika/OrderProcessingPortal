@@ -31,14 +31,14 @@ class AccountType
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
      */
     private $code;
     
@@ -228,13 +228,15 @@ class AccountType
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     /**
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        
+        $this->lastUpdatedTime = new \DateTime();
     }
     
     /**

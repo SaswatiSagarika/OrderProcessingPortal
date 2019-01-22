@@ -19,16 +19,31 @@ services:
         public: true
         arguments: ["%hash_signature_key%"]
 
-    # app.request_listener:
-    #     class: AppBundle\EventListener\RequestListener
-    #     public: true
-    #     arguments: [ "@app.service.auth","@translator" ]
-    #     tags:
-    #         - { name: kernel.event_listener, event: kernel.request }
+    app.service.order:
+        class: AppBundle\Service\OrderService
+        public: true
+        arguments: ["@doctrine", "@app.service.default_data", "@app.service.mailer", "@translator"]
+
+    app.request_listener:
+        class: AppBundle\EventListener\RequestListener
+        public: true
+        arguments: [ "@app.service.auth","@translator" ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
 
     app.service.api_caller:
         class: AppBundle\Service\TestApiService
         public: true
+
+    app.service.validate_data:
+        class: AppBundle\Service\ValidateService
+        public: true
+        arguments: ["@doctrine", "@translator"]
+
+    app.service.mailer:
+        class: AppBundle\Service\MailerService
+        public: true
+        arguments: ["@doctrine", "%mailer_user%", "@mailer"]
 
     # app.exception_listener:
     #     class: AppBundle\EventListener\ExceptionListener

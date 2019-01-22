@@ -30,14 +30,14 @@ class Status
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255, nullable=false)
+     * @ORM\Column(name="code", type="string", length=45, nullable=false)
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=45, nullable=false)
      */
     private $name;
 
@@ -173,7 +173,7 @@ class Status
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateDateTime = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
 }
 

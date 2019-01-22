@@ -22,10 +22,11 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     * @param array $data array of coloum name and its values
     * @return array $result containing required data.
     */
-    public function getProducts($value = null)
-    {
+    public function getProducts($value)
+    { 
+        
         $query = $this->createQueryBuilder('p')
-                    ->select('p.sku as userid')
+                    ->select('p.sku')
                     ->addSelect('p.name')
                     ->addSelect('p.description')
                     ->addSelect('p.level')
@@ -33,21 +34,56 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
                     ->addSelect('p.unit_price')
                     ->addSelect('p.level')
                     ->addSelect('p.quantity_on_hand')
+                    ->addSelect('p.product')
+                    ->addSelect('p.image')
                     ->addSelect('p.reorder_point')
-                    ->addSelect('t.name as type')
+                    ->addSelect('t.code as type')
                     ->addSelect('v.name as vendor')
-                    ->innerJoin('AppBundle:Vendor', 'v', 'WITH', 'p.prefered_vendor_id = v.id')
-                    ->innerJoin('AppBundle:Type', 't', 'WITH', 'p.type = t.id')
-                    ->innerJoin('AppBundle:ItemCategoryType', 'ct', 'WITH', 'p.item_category_type = ct.id');
-        if($value['name']){
-            $query->Where('p.name = :name')
-                ->setParameter('name', $value['name']);
-        }
-        if($value['category']){
-            $query->andWhere('ct.name = :name')
-                ->setParameter('name', $value['category']);
+                    ->addSelect('ct.name as category')
+                    ->leftJoin('AppBundle:Vendor', 'v', 'WITH', 'p.prefered_vendor = v.id')
+                    ->leftJoin('AppBundle:Type', 't', 'WITH', 'p.type = t.id')
+                    ->leftJoin('AppBundle:ItemCategoryType', 'ct', 'WITH', 'p.item_category_type = ct.id');
+        if($value){
+
+            if ($value['data']) {
+                $demo = json_decode($value,true);
+                 $query->Where('p.sku IN (:sku)')
+                    ->setParameter('sku', explode(',',$demo['data']));
+            } elseif ($value['name']) {
+
+                 $query->Where('p.name = :name')
+                    ->setParameter('name',$value['name']);
+            } elseif ($value['cat']) {
+
+                 $query->Where('ct.name = :name')
+                    ->setParameter('name',$value['cat']);
+            } 
         }
                              
         return $query->getQuery()->getResult();
     }
+
+    /**
+    * 
+    * get products
+    * It is used to fetch product data from database on given filters.
+    *
+    * @param array $data array of coloum name and its values
+    * @return array $result containing required data.
+    */
+    public function getVendorDetail($value)
+    { 
+        $query = $this->createQueryBuilder('p')
+                    ->select('p.sku')
+                    ->addSelect('p.name')
+                    ->addSelect('v.emailAddress as email')
+                    ->addSelect('v.name as vendor')
+                    ->leftJoin('AppBundle:Vendor', 'v', 'WITH', 'p.prefered_vendor = v.id');
+        
+         
+        $query->Where('p.product = :product')
+                ->setParameter('product', $value);
+        return $query->getQuery()->getResult();
+    }
+
 }

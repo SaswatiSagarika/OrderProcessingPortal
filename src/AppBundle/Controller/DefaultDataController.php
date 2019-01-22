@@ -22,18 +22,29 @@ class DefaultDataController extends Controller
      */
    public function indexAction ()
    {
+        $param = $this->container->getParameter('quickbooks');
+        $session = new Session();
         $dataService = DataService::Configure(array(
-            'auth_mode' => $this->container->getParameter('quickbooks')['authMode'],
-            'ClientID' => $this->container->getParameter('quickbooks')['clientId'],
-            'ClientSecret' => $this->container->getParameter('quickbooks')['clientSercret'],
+            'auth_mode' => $param['authMode'],
+            'ClientID' => $param['clientId'],
+            'ClientSecret' => $param['clientSercret'],
             'response_type'=> 'code',
-            'scope' => $this->container->getParameter('quickbooks')['scope'],
-            'RedirectURI' => $this->container->getParameter('quickbooks')['redirectUrl'],
+            'scope' => $param['scope'],
+            'RedirectURI' => $param['redirectUrl'],
             'baseUrl' => "Development"
         ));
 
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+
+        if ($session->has("code")) {
+           $data = $session->get("code");
+           print_r($data);
+
+           $this->container
+            ->get('app.service.default_data')
+            ->addNewUpdates($accessTokenObj);
+        }
 
         // open the home twig
         return $this->render('default/home.html.twig', [
