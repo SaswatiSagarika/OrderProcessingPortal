@@ -29,6 +29,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.4",
+        "knplabs/knp-paginator-bundle": "^2.8",
         "nelmio/api-doc-bundle": "^3.3",
         "php-translation/symfony-bundle": "^0.8.1",
         "quickbooks/v3-php-sdk": "^5.0",
@@ -40,7 +41,6 @@
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
-        "sonata-project/ecommerce": "2.3",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
