@@ -51,15 +51,15 @@ class ApiTestController extends Controller
 
             //calling the api
             $response = $this->container
-                ->get('app.service.api_caller')
-                ->callingApi($url, $header, $verb, $content)
+            ->get('app.service.api_caller')
+            ->callingApi($url, $header, $verb, $content)
             ;
             return new Response($response);
         }
         $response = new Response(
           $this->renderView('default/test.html.twig',['form' => $form->createView()]),
           200
-        );
+      );
         $response->headers->set('Content-Type', 'text/html');
         return $response;
     }

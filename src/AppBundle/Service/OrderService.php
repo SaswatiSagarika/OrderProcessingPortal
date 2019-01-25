@@ -163,4 +163,53 @@ class OrderService
         return array('status' => true);
     }
 
+
+     /**
+     * Private function to order List
+     *
+     * @param array $param
+     *
+     * @return array
+     */
+    public function getOrderHistoryDetails($param = array())
+    {
+        try {;
+            $returnData['status'] = false;
+            //seraching the product based on params
+            $orders       = $this->doctrine->getRepository('AppBundle:PurchaseOrder')->getOrderDetails($param);
+            $resultArray    = array();
+            $orderDetails = array();
+            $i              = 0;
+            foreach ($orders as $order) {
+
+                //the orderDetails
+                $orderDetails['poId']              = $order['poId'];
+                $orderDetails['customer']             = $order['customer'];
+                $orderDetails['account']      = $order['account'];
+                $orderDetails['salesTerm']            = $order['salesTerm'];
+                $orderDetails['totalAmt']          = $order['totalAmt'] ;
+                $orderDetails['notes']       = $order['notes'];
+                $orderDetails['dueDate'] = $order['dueDate'];
+                $orderDetails['currency']             = $order['currency'];
+                
+                $resultArray['order'][$i] = $orderDetails;
+                $i++;
+            }
+            
+            //In case no records found
+            if (!$resultArray) {
+                $returnData['message'] = 'api.empty';
+                return $returnData;
+            }
+            $returnData['status']   = true;
+            $returnData['response'] = $resultArray;
+            
+        }
+        catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+        }
+        
+        return $returnData;
+    }
+
 }

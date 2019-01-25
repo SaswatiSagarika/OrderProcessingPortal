@@ -49,8 +49,11 @@ class ProductService
             $categorytDetails = array();
             $i              = 0;
             $j              = 0;
+            if (!$products) {
+                $returnData['message'] = 'api.empty';
+                return $returnData;
+            }
             foreach ($products as $product) {
-
                 //the productDetails
                 $productDetails['sku']              = $product['sku'];
                 $productDetails['name']             = $product['name'];
@@ -68,15 +71,15 @@ class ProductService
                 if (! in_array($product['category'], $categorytDetails)) {
                     array_push($categorytDetails, $product['category']);
                 }
+
                 $resultArray['product'][$i] = $productDetails;
                 $i++;
             }
+
+            
             $resultArray['filter']['category'] = $categorytDetails;
             //In case no records found
-            if (!$resultArray) {
-                $returnData['message'] = 'api.empty';
-                return $returnData;
-            }
+            
             $returnData['status']   = true;
             $returnData['response'] = $resultArray;
             

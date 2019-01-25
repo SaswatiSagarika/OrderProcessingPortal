@@ -133,6 +133,7 @@ class OrderController extends FOSRestController
     public function getOrderHistoryAction(Request $request)
     {
         try {
+
             $requestContent = json_decode($request->getContent(), true);
             // if content is not provided.
             $translator =  $this->get('translator');
@@ -141,10 +142,11 @@ class OrderController extends FOSRestController
             $validateService = $this->get('app.service.validate_data');
             
             // checking the params the account details provided
-            $orderDetails = $validateService->validateOrderData($requestContent);
+            $orderDetails = $validateService->checkDetails($requestContent);
             if (false === $orderDetails['status']) {
                 throw new NotFoundHttpException($translator->trans($orderDetails['message']));
             }
+
             $orderResultArray = $orderService->getOrderHistoryDetails($requestContent);
             if (false === $orderResultArray['status']) {
                 throw new NotFoundHttpException($translator->trans($orderResultArray['message']));
@@ -209,11 +211,11 @@ class OrderController extends FOSRestController
             }
 
             // checking the params the account details provided
-            $orderDetails = $validateService->validateOrderDetails($requestContent);
+            $orderDetails = $validateService->checkDetails($requestContent);
             if (false === $orderDetails['status']) {
                 throw new NotFoundHttpException($translator->trans($orderDetails['message']));
             }
-            $orderResultArray = $orderService->getOrderDetails($requestContent);
+            $orderResultArray = $orderService->getOrderItemDetails($orderDetails);
             if (false === $orderResultArray['status']) {
                 throw new NotFoundHttpException($translator->trans($orderResultArray['message']));
             }

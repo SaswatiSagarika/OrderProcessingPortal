@@ -1,6 +1,6 @@
 <?php
 /**
- * Command used for Users section to upload csv file.
+ * Command used for Products section to upload csv file.
  *
  * @author Saswati
  *

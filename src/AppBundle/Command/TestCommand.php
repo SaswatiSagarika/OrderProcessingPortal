@@ -20,8 +20,8 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('test:service')
-            ->setDescription('create new accounts in users table')
+        ->setName('test:service')
+        ->setDescription('create new accounts in users table')
         ;
     }
     /**
@@ -36,7 +36,7 @@ class TestCommand extends ContainerAwareCommand
     {   
         $container = $this->getContainer();
         $status = $container->get('app.service.mailer')->sendMail(16);
-       
+        
         $output->writeln('<fg=magenta>'.json_encode($status).'</fg=magenta>');
     }
 

@@ -40,6 +40,11 @@ services:
         public: true
         arguments: ["@doctrine", "@translator"]
 
+    app.service.registration:
+        class: AppBundle\Service\RegistrationService
+        public: true
+        arguments: ["@doctrine", "@app.service.mailer"]
+
     app.service.mailer:
         class: AppBundle\Service\MailerService
         public: true
@@ -49,3 +54,5 @@ services:
     #     class: AppBundle\EventListener\ExceptionListener
     #     tags:
     #         - { name: kernel.event_listener, event: kernel.exception }
+
+    

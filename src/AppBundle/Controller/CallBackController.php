@@ -44,16 +44,16 @@ class CallBackController extends Controller
         $data = $request->server->get('QUERY_STRING');
         //parsing query string
         $parseUrl = $this->container
-                        ->get('app.service.default_data')
-                        ->parseAuthRedirectUrl($data);
+        ->get('app.service.default_data')
+        ->parseAuthRedirectUrl($data);
         //getting the accessToken
         $accessTokenObj = $OAuth2LoginHelper
-                            ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
+        ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
         $session->set('code', $accessTokenObj);
 
         $this->container
-            ->get('app.service.default_data')
-            ->addNewUpdates($accessTokenObj);
+        ->get('app.service.default_data')
+        ->addNewUpdates($accessTokenObj);
         
 
     }

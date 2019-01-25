@@ -11,20 +11,20 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\FormTypeInterface;
 use AppBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use AppBundle\Form\LoginFormType;
 
 
 class UserController extends Controller
 {   
     /**
-     * function to call the api from symfony form
+     * function to shoe to registration form
      *
      * @Route("/register", name="user_registration")
      *
@@ -33,49 +33,106 @@ class UserController extends Controller
      *
      * @return $response
      */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function registerAction(Request $request)
     {
         // 1) build the form
-        $user = new User();
         $form = $this->createForm(UserType::class);
-
+        $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->getCustomerDetail();
+        
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-
-            return $this->redirectToRoute('replace_with_some_route');
+            //initalizing form data
+           $param['password'] = hash_hmac('sha1',$form['password']->getData(), 
+                $this->container->getParameter('hash_signature_key'))
+            ;
+            $param['email'] = $form['email']->getData();
+            $param['name'] = $form['name']->getData();
+            $param['last'] = $form['last']->getData();
+            //calling registr api     
+            $response = $this->container
+                ->get('app.service.registration')
+                ->registerUserResponse($param)
+            ;
+            if(true === $response['status']){
+                $session = new Session();
+                $session->set('authenticated', true);
+            }
+            return $this->redirect($this->generateUrl('homepage'));
+            // return $this->render(
+            //     'user/otp.html.twig',
+            //     ['user' => $param,
+            //      'response' => $response
+            // ]);
         }
 
         return $this->render(
             'user/register.html.twig',
+            ['form' => $form->createView(),
+            'customer' => $customer]
+        );
+    }
+
+    /**
+     * function to call the api from symfony form
+     *
+     * @Route("/login", name="user_login")
+     *
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     *
+     * @return $response
+     */
+    public function loginAction(Request $request)
+    {
+        // 1) build the form
+        $form = $this->createForm(LoginFormType::class);
+        
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $param['email'] = $form['email']->getData();
+             $param['password'] = hash_hmac('sha1',$form['password']->getData(), 
+                $this->container->getParameter('hash_signature_key'))
+            ;
+            
+            // $response = $this->forward('AppBundle\Controller\AuthController::loginAction', [
+            //     'param'  =>  $param,
+            // ]);
+            $response = $this->container
+                ->get('app.service.registration')
+                ->loginResponse($param)
+            ;
+            if(true === $response['status']){
+                $session = new Session();
+                $session->set('authenticated', true);
+            }
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
+        return $this->render(
+            'user/login.html.twig',
             ['form' => $form->createView()]
         );
     }
-    public function indexAction (Request $request)
-    {	
-        $form = $this->createForm(UserType::class);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-        }
-        $response = new Response(
-          $this->renderView('user/register.html.twig',['form' => $form->createView()]),
-          200
-        );
-        $response->headers->set('Content-Type', 'text/html');
-        return $response;
+
+    /**
+     * function to logout
+     *
+     * @Route("/logout", name="user_logout")
+     *
+     * @param Request $request
+     *
+     * @return $response
+     */
+    public function logoutAction(Request $request)
+    {
+        // 1) build the form
+        $session = new Session();
+        $session->set('authenticated', false);
+        $session->clear();
+        return $this->redirect($this->generateUrl('user_login'));
     }
+    
 }

@@ -13,9 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="User")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="Username already taken")
  */
-class User
+class User 
 {
     /**
      * @var int
@@ -41,7 +40,7 @@ class User
     private $last;
 
     /**
-     * @var string
+ F    * @var string
      * @Assert\NotBlank
      * @Assert\Email
      * @ORM\Column(name="email", type="string", length=255)
@@ -92,14 +91,14 @@ class User
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_update_date_time", type="datetime")
+     * @ORM\Column(name="last_update_date_time", type="datetime", nullable=true)
      */
     private $lastUpdateDateTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date_time", type="datetime")
+     * @ORM\Column(name="created_date_time", type="datetime", nullable=true)
      */
     private $createdDateTime;
 
@@ -185,6 +184,29 @@ class User
         return $this->last;
     }
 
+    /**
+     * Set employeeID
+     *
+     * @param string $employeeID
+     *
+     * @return User
+     */
+    public function setEmployeeID($employeeID)
+    {
+        $this->employeeID = $employeeID;
+
+        return $this;
+    }
+
+    /**
+     * Get employeeID
+     *
+     * @return string
+     */
+    public function getEmployeeID()
+    {
+        return $this->employeeID;
+    }
     /**
      * Get isVerified
      *
@@ -354,12 +376,13 @@ class User
         return $this->createdDateTime;
     }
 
-     /**
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
     {
         $this->createdDateTime = new \DateTime();
+        $this->lastUpdateDateTime = new \DateTime();
     }
     /**
      * @ORM\PreUpdate
@@ -369,4 +392,3 @@ class User
         $this->lastUpdateDateTime = new \DateTime();
     }
 }
-

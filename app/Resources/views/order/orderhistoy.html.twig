@@ -1,0 +1,44 @@
+
+{% extends 'base.html.twig' %}
+  {% block stylesheets %}
+    <link rel="stylesheet" href="/css/home.css" />
+  {% endblock %}
+{% block body %}
+    
+<div class="container">
+     {% include('./inc/nav1.html.twig') %}
+{% if orders %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">POID</th>
+      <th scope="col">Customer</th>
+      <th scope="col">Sales Term</th>
+      <th scope="col">Currency</th>
+      <th scope="col">Total Amount</th>
+      <th scope="col">Due Date</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    {% for order in orders %}
+        <tr>
+            <td scope="col">{{order.poId}}</td>
+            <td scope="col">{{order.customer}}</td>
+            <td scope="col">{{order.salesTerm}}</td>
+            <td scope="col">{{order.currency}}</td>
+            <td scope="col">$ {{order.totalAmt}}.00</td>
+            <td scope="col">{{order.dueDate.date|date("m/d/Y")}}</td>
+            {# <td><a type="button" class="btn btn-info"  href="{{ path('homepage', {'id': order.poId})}}">More</a></td> #}
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>No Orders are present.</p>
+{% endif %}
+</div>
+{% endblock %}
+{% block javascripts %}
+  <script src="/js/order.js"></script>
+{% endblock %}

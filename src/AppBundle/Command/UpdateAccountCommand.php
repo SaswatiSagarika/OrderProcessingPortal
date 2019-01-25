@@ -1,6 +1,6 @@
 <?php
 /**
- * Command used for Users section to upload csv file.
+ * Command used for Account section to upload csv file.
  *
  * @author Saswati
  *
@@ -20,8 +20,8 @@ class UpdateAccountCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('upload:accounts')
-            ->setDescription('create new accounts in users table')
+        ->setName('upload:accounts')
+        ->setDescription('create new accounts in users table')
         ;
     }
     /**
@@ -36,7 +36,7 @@ class UpdateAccountCommand extends ContainerAwareCommand
     {   
         $container = $this->getContainer();
         $status = $container->get('app.service.upload')->uploadAccount();
-       
+        
         $output->writeln('<fg=magenta>'.json_encode($status).'</fg=magenta>');
     }
 

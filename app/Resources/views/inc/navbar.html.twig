@@ -1,5 +1,6 @@
-
+{% set mdm_session = app.session.get('authenticated') %}
 <nav class="navbar navbar-default navbar-static-top">
+
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -11,24 +12,31 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class=""><a href="#">Home</a></li>
+        <li class=""><a href="{{ path('homepage')}}">Home</a></li>
         <li><a href="#"></a></li>
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Category
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        {% for category in categories %}
-         <li> <a class="dropdown-item" href="{{ path('homepage', {'category': category})}}">{{category}}</a></li>
-        {% endfor %}
-        </ul>
-      </li>
+        
       </ul>
       <ul class="nav navbar-nav navbar-right">
+       {% if mdm_session == false %}
+
+        <li>
+          <a id="register" href="{{path('user_registration')}}">Register</a>
+        </li>
+        <li>
+          <a id="login" href="{{path('user_login')}}">Login</a>
+        </li>
+        {% else %}
+          <li>
+          <a id="orderlist" href="{{path('orderlist')}}">Order List</a>
+        </li>
         <li>
             <input id="shopping-cart" type="hidden" name="product-cart-list">
           <a id="cart" href="#edit">Cart <span class="glyphicon glyphicon-shopping-cart" data-toggle="modal" data-target="#myModal"  data-backdrop="static" data-keyboard="false"></span></a>
         </li>
+        <li>
+          <a id="logout" href="{{path('user_logout')}}">Logout</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

@@ -16,3 +16,4 @@ invalid_content_type: Invalid Content type
 invalid_authorization: Invalid Authorization.
 invalid_data: Some data is missing.
 missing_account: please provide a valid Account.
+missing_login: Email or password is not correct please try again.

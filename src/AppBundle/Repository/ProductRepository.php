@@ -44,19 +44,19 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
                     ->leftJoin('AppBundle:Type', 't', 'WITH', 'p.type = t.id')
                     ->leftJoin('AppBundle:ItemCategoryType', 'ct', 'WITH', 'p.item_category_type = ct.id');
         if($value){
-
-            if ($value['data']) {
+            if (array_key_exists('data',$value)) {
                 $demo = json_decode($value,true);
                  $query->Where('p.sku IN (:sku)')
                     ->setParameter('sku', explode(',',$demo['data']));
-            } elseif ($value['name']) {
+            } elseif (array_key_exists('name',$value)) {
 
                  $query->Where('p.name = :name')
                     ->setParameter('name',$value['name']);
-            } elseif ($value['cat']) {
+
+            } elseif (array_key_exists('category',$value)) {
 
                  $query->Where('ct.name = :name')
-                    ->setParameter('name',$value['cat']);
+                    ->setParameter('name',$value['category']);
             } 
         }
                              

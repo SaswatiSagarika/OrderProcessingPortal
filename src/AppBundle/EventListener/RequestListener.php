@@ -50,7 +50,7 @@ class RequestListener
         $response = $this->authservice->authenticateRequest($request);
         
         if(true !== $response['status']){
-            
+           
             $responseData['error'] = $this->translator->trans($response['errorMessage']['message']);
             $event->setResponse(new JsonResponse($responseData));
         }

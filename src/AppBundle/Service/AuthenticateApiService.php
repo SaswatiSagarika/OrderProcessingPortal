@@ -11,6 +11,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Constants\ErrorConstants;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AuthenticateApiService
 {
@@ -47,11 +48,13 @@ class AuthenticateApiService
                 $returnData['status']= true;
                 return $returnData;
             }
-            if (!json_decode($content = $request->getContent(), true)) {
-                $message = ErrorConstants::$apiErrors['INVALIDJSON'];
-                throw new Exception("$message");
+
+            // if (!json_decode($content = $request->getContent(), true)) {
+            //      print_r(1);exit();
+            //     $message = ErrorConstants::$apiErrors['INVALIDJSON'];
+            //     throw new Exception("$message");
                 
-            }
+            // }
            
             $status = true;
             
@@ -65,9 +68,28 @@ class AuthenticateApiService
     }
 
     /**
-    */
+     * Function to check route
+     *
+     * @param array $request
+     *
+     * @return true
+     **/
     public function isOpenRoute($request)
     {
         return (!empty($request->getPathInfo())) ? 1 : 0;
+    }
+
+    /**
+     * Function to check Auth
+     *
+     * @return true
+     **/
+     public function isAuth()
+    {
+        $session = new Session();
+        if ($session->has("authenticated")) {
+            return $session->get("authenticated");
+        }
+         return false;
     }
 }

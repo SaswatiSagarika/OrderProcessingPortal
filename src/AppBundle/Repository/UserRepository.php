@@ -13,4 +13,30 @@ namespace AppBundle\Repository;
 
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
+	/**
+    * 
+    * check login
+    * It is used to fetch product data from database on given filters.
+    *
+    * @param array $data array of coloum name and its values
+    * @return array $result containing required data.
+    */
+    public function loginDetails($value)
+    { 
+        
+        $query = $this->createQueryBuilder('u')
+                    ->select('u.id')
+                    ->addSelect('u.email as email')
+                    ->addSelect('cc.name as currency')
+                    ->leftJoin('AppBundle:Status', 's', 'WITH', 'u.status = s.id')
+                    ->Where('u.email = :email')
+                    ->setParameter('email',$value['email'])
+                    ->andWhere('u.pass = :pass')
+                    ->setParameter('pass',$value['password'])
+                    ->andWhere('s.name = :status')
+                    ->setParameter('status','ACTIVE');
+              
+        return $query->getQuery()->getResult();
+    }
 }

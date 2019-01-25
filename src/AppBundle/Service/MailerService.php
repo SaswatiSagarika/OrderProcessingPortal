@@ -75,7 +75,7 @@ class MailerService
      *
      * @return true
      **/
-    public function sendMail($toEmail, $Qty)
+    public function sendMailToVendor($toEmail, $Qty)
     {
         try {
              $body = 'Hi  '.$toEmail[0]['vendor'].', <br/> '
@@ -94,6 +94,33 @@ class MailerService
             $returnData['errorMessage'] = $e->getMessage();
         }
         
+        return $returnData;
+    }
+
+    /**
+     * Function to send the mail
+     *
+     * @param array $request
+     *
+     * @return true
+     **/
+    public function sendOtpToEmail($param)
+    {
+        try {
+             $body = 'Hi  '.$param['name'].', <br/> <br/> <br/></b>Your one-time password to verify your account is ' . $param['otp'].'.<br/><br/>Thanks, <br/>Quickbooks Corp.';
+       
+            $message = \Swift_Message::newInstance() 
+                      ->setSubject('Verification of account') 
+                      ->setFrom($this->emailTo) 
+                      ->setTo('saswati.sagarika@mindfiresolutions.com') 
+                      ->setBody($body, 'text/html');
+                      
+            $this->mailer->send($message); 
+            $returnData['status'] = true;
+       } catch (\Exception $e) {
+            $returnData['errorMessage'] = $e->getMessage();
+
+        }
         return $returnData;
     }
 

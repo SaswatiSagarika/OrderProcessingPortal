@@ -177,7 +177,7 @@ class ValidateService
             $returnData = $this->sanitarize($param);
             $customer = $this->doctrine->getRepository('AppBundle:Customer')->findOneBy(array(
                         'customer' => $param['value'] ));
-
+            //checking if customer present or not
             if (!($customer)) {
                $message= 'api.invalid_customer';
                throw new Exception($message);

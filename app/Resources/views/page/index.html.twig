@@ -1,58 +1,63 @@
-{% extends 'base.html.twig' %}
-  {% block stylesheets %}
-    <link rel="stylesheet" href="/css/home.css" />
-  {% endblock %}
-{% block body %}
 
-    <div class="row product-list">
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="/css/home.css" />
+{% endblock %}
+{% block body %}
+  {% include('./inc/nav2.html.twig') %}
+  {% if products %}
+  <div class="row product-list">
     <div class="alert-message" id="message">
-     
+
     </div>
-        {% for product in products %}
-        <div class="col-sm-4 col-md-3">
-          <form class="form-item">
-            <div class="thumbnail">
-              <div class="caption text-center ">
-                <div class="position-relative" style="vertical-align:middle; text-align:center">
-                  <a href="#" class="product-image">
-                    <img src="{{product.image}}" class="thumbnail-image" id="{{product.sku}}" data-toggle="modal" data-target="#myProductModal"  data-backdrop="static" data-keyboard="false">
-                  </a>
-                  <p id="name">{{product.name}}</p>
-                  
-                  <input class="product_code_{{product.sku}}" type="hidden" value="{{product.sku}}">
-                  <input class="product_id_{{product.sku}}" type="hidden" value="{{product.product_id}}">
-                  <input class="product_name_{{product.sku}}" type="hidden" value="{{product.name}}">
-                  <input class="product_price_{{product.sku}}" type="hidden" value="{{product.unit_price}}">
-                </div>               
+    {% for product in products %}
+      <div class="col-sm-4 col-md-3">
+        <form class="form-item">
+          <div class="thumbnail">
+            <div class="caption text-center ">
+              <div class="position-relative" style="vertical-align:middle; text-align:center">
+                <a href="#" class="product-image">
+                  <img src="{{product.image}}" class="thumbnail-image" id="{{product.sku}}" data-toggle="modal" data-target="#myProductModal"  data-backdrop="static" data-keyboard="false">
+                </a>
+                <p id="name">{{product.name}}</p>
+
+                <input class="product_code_{{product.sku}}" type="hidden" value="{{product.sku}}">
+                <input class="product_id_{{product.sku}}" type="hidden" value="{{product.product_id}}">
+                <input class="product_name_{{product.sku}}" type="hidden" value="{{product.name}}">
+                <input class="product_price_{{product.sku}}" type="hidden" value="{{product.unit_price}}">
+              </div>               
+            </div>
+            <div class="caption card-footer text-center">
+              <div>
+
+                <a class='btn qtyminus' id="qtyminus" field='quantity_{{product.sku}}' >-</a>
+                <input type='number' name='quantity_{{product.sku}}' value='0' class='qty_{{product.sku}}' style="width:30px;text-align: center;" min="1" max="{{product.quantity_on_hand}}"/>
+                <a class='btn qtyplus' id="qtyminus" field='quantity_{{product.sku}}'>+</a>
+
               </div>
-              <div class="caption card-footer text-center">
-                <div>
-                  
-                    <a class='btn qtyminus' id="qtyminus" field='quantity_{{product.sku}}' >-</a>
-                    <input type='number' name='quantity_{{product.sku}}' value='0' class='qty_{{product.sku}}' style="width:30px;text-align: center;" min="1" max="{{product.quantity_on_hand}}"/>
-                    <a class='btn qtyplus' id="qtyminus" field='quantity_{{product.sku}}'>+</a>
-                  
-                </div>
-                <div>
-                  <button id="{{product.sku}}" type="button" class="btn btn-warning add-to-cart">Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></button>
-                </div>
+              <div>
+                <button id="{{product.sku}}" type="button" class="btn btn-warning add-to-cart">Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></button>
               </div>
             </div>
-          </form>
-        </div>
-        {% endfor %}
+          </div>
+        </form>
+      </div>
+    {% endfor %}
 
-        <div class="navigation text-center">
-          {{ knp_pagination_render(products) }}
-        </div>
+    <div class="navigation text-center">
+      {{ knp_pagination_render(products) }}
     </div>
+  </div>
+{% else %}
+  <p>No products are present.</p>
+{% endif %}
+  <div class="row cart">
+  </div>
 
-    <div class="row cart">
-    </div>
 
-
-
+  {% include('./modals/cart.html.twig') %}
+  {% include('./modals/product.html.twig') %}
 {% endblock %}
 {% block javascripts %}
-<script src="/js/main.js"></script>
+  <script src="/js/product.js"></script>
 {% endblock %}

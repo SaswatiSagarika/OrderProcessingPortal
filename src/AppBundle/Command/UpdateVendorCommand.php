@@ -1,6 +1,6 @@
 <?php
 /**
- * Command used for Users section to upload csv file.
+ * Command used for Vendors section to upload csv file.
  *
  * @author Saswati
  *
@@ -20,8 +20,8 @@ class UpdateVendorCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('upload:vendors')
-            ->setDescription('create new products in users table')
+        ->setName('upload:vendors')
+        ->setDescription('create new products in users table')
         ;
     }
     /**
@@ -36,7 +36,7 @@ class UpdateVendorCommand extends ContainerAwareCommand
     {   
         $container = $this->getContainer();
         $status = $container->get('app.service.upload')->uploadVendors();
-       
+        
         $output->writeln('<fg=magenta>'.json_encode($status).'</fg=magenta>');
     }
 

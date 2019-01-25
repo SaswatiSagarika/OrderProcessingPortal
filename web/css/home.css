@@ -26,8 +26,6 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 .navigation {
-  top: 50%;
   left: 50%;
   text-align: center;
-  position:fixed;
 }
