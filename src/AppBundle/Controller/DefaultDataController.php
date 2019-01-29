@@ -44,11 +44,11 @@ class DefaultDataController extends Controller
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
         if ($session->has("code")) {
-             $data = $session->get("code");
+            $session->get("code");
              
-             $this->container
-             ->get('app.service.default_data')
-             ->addNewUpdates($accessTokenObj);
+            $this->container
+            ->get('app.service.default_data')
+            ->addNewUpdates($accessTokenObj);
         }
 
         // open the home twig

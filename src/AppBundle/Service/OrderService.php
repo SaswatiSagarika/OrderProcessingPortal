@@ -173,7 +173,7 @@ class OrderService
      */
     public function getOrderHistoryDetails($param = array())
     {
-        try {;
+        try {
             $returnData['status'] = false;
             //seraching the product based on params
             $orders       = $this->doctrine->getRepository('AppBundle:PurchaseOrder')->getOrderDetails($param);

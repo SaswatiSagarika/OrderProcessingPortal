@@ -160,37 +160,25 @@
 	* return message
 	*/
 	var alertMessage = function (message, type, place) {
-
+		var body;
 		switch (type) { 
 			case 'success': 
-			body = '<div class="alert alert-success alert-dismissible" role="alert">'+
-			'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
-			'<span aria-hidden="true">&times;</span></button>'+
-			message+
-			'</div>'
+			body = '<div class="alert alert-'+type+' alert-dismissible" role="alert">'
 			break;
 			case 'warning': 
-			body = '<div class="alert alert-warning alert-dismissible" role="alert">'+
-			'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
-			'<span aria-hidden="true">&times;</span></button>'+
-			message+
-			'</div>'
+			body = '<div class="alert alert-'+type+' alert-dismissible" role="alert">'
 			break;
 			case 'error': 
-			body = '<div class="alert alert-danger alert-dismissible" role="alert">'+
-			'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
-			'<span aria-hidden="true">&times;</span></button>'+
-			message+
-			'</div>'
+			body = '<div class="alert alert-'+type+' alert-dismissible" role="alert">'
 			break;
 			default:
-			body = '<div class="alert alert-danger alert-dismissible" role="alert">'+
-			'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+			body = '<div class="alert alert-'+type+' alert-dismissible" role="alert">'
+		}
+
+		body += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 			'<span aria-hidden="true">&times;</span></button>'+
 			message+
-			'</div>'
-		}
-		console.log(2);
+			'</div>';
 		if (place === 'modal'){
 			$("#modal-message").append(body);
 		} else {
@@ -235,7 +223,7 @@ $(document).ready(function () {
 			}
 			//add new record
 			indexModule.createTableRecordsForProducts(products);
-			message = '<strong>'+product.name+' successfully added to cart</strong>';
+			var message = '<strong>'+product.name+' successfully added to cart</strong>';
 			indexModule.alertMessage(message, 'success');
 		} else {
 			indexModule.alertMessage(product, 'error');
@@ -248,8 +236,8 @@ $(document).ready(function () {
 	$('#cart').on('click', function(event) {
 		//check if cart is empty or not
 		if(products.length === 0) {
-			message = "<h4>Humph!!! Cart is Empty.</h4>";
-			indexModule.alertMessage(message, 'warning');
+			// var message = "<h4>Humph!!! Cart is Empty.</h4>";
+			// indexModule.alertMessage(message, 'warning');
 			$('#mytablebody').html('<div style="text-align:center;"><h3>Cart is empty.</h3><button class="btn btn-warning">Continue Shopping</button></div>');
 		}
 
@@ -337,7 +325,7 @@ $(document).ready(function () {
 	$(".place-order").click(function(){	
 
 		if(!customer){
-			message = '<strong>Please select the consumer for whom you are placing this order.</strong>';
+			var message = '<strong>Please select the consumer for whom you are placing this order.</strong>';
 			indexModule.alertMessage(message, 'error','modal');
 			return;
 		}

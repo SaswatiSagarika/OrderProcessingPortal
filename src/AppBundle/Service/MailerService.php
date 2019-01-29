@@ -107,6 +107,7 @@ class MailerService
     public function sendOtpToEmail($param)
     {
         try {
+            $returnData['status'] = false;
              $body = 'Hi  '.$param['name'].', <br/> <br/> <br/></b>Your one-time password to verify your account is ' . $param['otp'].'.<br/><br/>Thanks, <br/>Quickbooks Corp.';
        
             $message = \Swift_Message::newInstance() 

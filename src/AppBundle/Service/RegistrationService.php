@@ -68,8 +68,11 @@ class RegistrationService
 
             $em->persist($user);
             $em->flush();
-            $data = $this->mailer->sendOtpToEmail($param);
-
+            $mail = $this->mailer->sendOtpToEmail($param);
+            if (false === $mail['status']) {
+                $returnData['message'] = $mail['errorMessage'];
+                return $returnData;
+            }
             $returnData['status'] = true;
             
             

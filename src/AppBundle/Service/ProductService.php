@@ -48,7 +48,6 @@ class ProductService
             $productDetails = array();
             $categorytDetails = array();
             $i              = 0;
-            $j              = 0;
             if (!$products) {
                 $returnData['message'] = 'api.empty';
                 return $returnData;

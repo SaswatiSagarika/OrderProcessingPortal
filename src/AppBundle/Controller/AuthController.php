@@ -281,13 +281,12 @@ class AuthController extends FOSRestController
             if (false === $loginData['status'] ) {
                 throw new NotFoundHttpException($this->get('translator')->trans($loginData['message']));
             }
-            $em = $this->getDoctrine()->getManager();
             
             //verify the login details.
             $loginResult = $registerService->loginResponse($loginData);
 
             if (false === $loginResult['status']) {
-                throw new BadRequestHttpException($this->get('translator')->trans($userData['message']));
+                throw new BadRequestHttpException($this->get('translator')->trans($loginResult['message']));
             }
             
             $resultArray['success'] = $this->get('translator')->trans('api.otp_verified');

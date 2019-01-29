@@ -99,7 +99,7 @@ class UploadService
 
                         $accountRef = new Account;
                     }
-
+                    //setting account detail
                     $accountRef->setName($account->FullyQualifiedName)
                     ->setDescription($account->Description)
                     ->setAccountNumber($account->AcctNum)
@@ -462,7 +462,7 @@ class UploadService
                         ->setLogitude($customer->BillAddr->Long);
                     }
 
-                    if (true == $customer->Active) {
+                    if (true === $customer->Active) {
                         $customerRef->setStatus($active);
                     } else {
                         $customerRef->setStatus($inactive);

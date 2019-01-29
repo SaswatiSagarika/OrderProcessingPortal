@@ -95,19 +95,19 @@ class ValidateService
             if (!empty($param['APAccountRef'])) {
                 $returnData['APAccountRef'] = $this->validateAccountDetails($param['APAccountRef']);
                 
-                if (false === $accountDetails['status']) {
-                   throw new NotFoundHttpException($accountDetails['error']);
+                if (false === $returnData['APAccountRef']['status']) {
+                   throw new NotFoundHttpException($returnData['APAccountRef']['error']);
                 }
             }
             $returnData['Line'] = $this->validateProductDetails($param['Line']);
-            if (false === $lineDetails['status']) {
-                throw new Exception($lineDetails['error']);
+            if (false === $returnData['Line']['status']) {
+                throw new Exception($returnData['Line']['error']);
             }
             if ($param['CustomerRef']) {
                 $returnData['CustomerRef'] = $this->validateCustomerDetails($param['CustomerRef']);
             
-                if (false === $customerDetails['status']) {
-                    throw new Exception($customerDetails['error']);
+                if (false === $returnData['CustomerRef']['status']) {
+                    throw new Exception($returnData['CustomerRef']['error']);
                 }
             }
             //check if the vendor Ref i given
@@ -115,8 +115,8 @@ class ValidateService
                 //validate the vendor
                 $returnData['VendorRef'] = $this->validateVendorDetails($param['VendorRef']);
             
-                if (false === $vendorDetails['status']) {
-                    throw new Exception($vendorDetails['error']);
+                if (false === $returnData['VendorRef']['status']) {
+                    throw new Exception($returnData['VendorRef']['error']);
                 }
             }
             $returnData['status'] = true;
