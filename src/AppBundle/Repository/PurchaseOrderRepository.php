@@ -16,8 +16,8 @@ class PurchaseOrderRepository extends \Doctrine\ORM\EntityRepository
 {
 	/**
     * 
-    * get orders
-    * It is used to fetch product data from database on given filters.
+    * get orders Details
+    * It is used to fetch orders data from database on given filters.
     *
     * @param array $data array of coloum name and its values
     * @return array $result containing required data.

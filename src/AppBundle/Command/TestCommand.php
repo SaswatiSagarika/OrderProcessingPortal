@@ -20,8 +20,8 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-        ->setName('test:service')
-        ->setDescription('create new accounts in users table')
+            ->setName('test:service')
+            ->setDescription('create new accounts in users table')
         ;
     }
     /**

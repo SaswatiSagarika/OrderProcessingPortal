@@ -28,21 +28,22 @@ class HomeController extends Controller
      */
      public function indexAction(Request $request)
      {
-        $auth = $this->container
-        ->get('app.service.auth')
-        ->isAuth();
+        //check if authenticated or not
+        $auth = $this->container->get('app.service.auth')->isAuth();
         if (false === $auth) {
             return $this->redirect($this->generateUrl('user_login'));
         }
+        //getting product and customer data
         $products = $this->container->get('app.service.product')->getProductResponse($request->query->all());
         $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->getCustomerDetail();
-        
+        //paginating the product data
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $products['response']['product'], /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             4/*limit per page*/
         );
+
         return $this->render('page/index.html.twig', [
             'products' => $pagination,
             'categories' => $products['response']['filter']['category'],
@@ -60,24 +61,25 @@ class HomeController extends Controller
      */
     public function orderAction(Request $request)
     {
-        $auth = $this->container
-        ->get('app.service.auth')
-        ->isAuth();
+         //check if authenticated or not
+        $auth = $this->container->get('app.service.auth')->isAuth();
         if (false === $auth) {
             return $this->redirect($this->generateUrl('user_login'));
         }
-        $session = new Session();
+        //get the order details
         $orders = $this->container->get('app.service.order')->getOrderHistoryDetails($request->query->all());
         $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->getCustomerDetail();
         if (false === $orders['status'] ) {
             $orders['response']['order'] = $orders['status'];
         }
+        //paginating the product data
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $orders['response']['order'], /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
+
         return $this->render('order/orderhistoy.html.twig', [
             'orders' => $pagination,
             'customer' => $customer

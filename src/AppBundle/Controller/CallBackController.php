@@ -1,6 +1,6 @@
 <?php
 /**
- * Controller for home product ui functions.
+ * Controller for callback function
  *
  * @author Saswati
  *
@@ -50,14 +50,10 @@ class CallBackController extends Controller
         $accessTokenObj = $OAuth2LoginHelper
         ->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
         $session->set('code', $accessTokenObj);
-
+        //saving the accessToken in db
         $this->container
         ->get('app.service.default_data')
         ->addNewUpdates($accessTokenObj);
-        
-
     }
-
-
 }
 

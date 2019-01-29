@@ -128,7 +128,6 @@ class UserController extends Controller
      */
     public function logoutAction(Request $request)
     {
-        // 1) build the form
         $session = new Session();
         $session->set('authenticated', false);
         $session->clear();

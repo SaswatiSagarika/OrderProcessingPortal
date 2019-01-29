@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateCustomerCommand extends ContainerAwareCommand
 {
     /**
-     * Function to set the name, description and argument for the upload:accounts command.
+     * Function to set the name, description and argument for the upload:Customer command.
      */
     protected function configure()
     {

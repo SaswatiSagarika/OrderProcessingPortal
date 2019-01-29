@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Controller for getting the auth token for the first time function
+ *
+ * @author Saswati
+ *
+ * @category Controller
+ */
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,32 +28,32 @@ class DefaultDataController extends Controller
      */
    public function indexAction ()
    {
-    $param = $this->container->getParameter('quickbooks');
-    $session = new Session();
-    $dataService = DataService::Configure(array(
-        'auth_mode' => $param['authMode'],
-        'ClientID' => $param['clientId'],
-        'ClientSecret' => $param['clientSercret'],
-        'response_type'=> 'code',
-        'scope' => $param['scope'],
-        'RedirectURI' => $param['redirectUrl'],
-        'baseUrl' => "Development"
-    ));
+        $param = $this->container->getParameter('quickbooks');
+        $session = new Session();
+        $dataService = DataService::Configure(array(
+            'auth_mode' => $param['authMode'],
+            'ClientID' => $param['clientId'],
+            'ClientSecret' => $param['clientSercret'],
+            'response_type'=> 'code',
+            'scope' => $param['scope'],
+            'RedirectURI' => $param['redirectUrl'],
+            'baseUrl' => "Development"
+        ));
 
-    $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-    $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+        $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+        $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
-    if ($session->has("code")) {
-     $data = $session->get("code");
-     
-     $this->container
-     ->get('app.service.default_data')
-     ->addNewUpdates($accessTokenObj);
- }
+        if ($session->has("code")) {
+             $data = $session->get("code");
+             
+             $this->container
+             ->get('app.service.default_data')
+             ->addNewUpdates($accessTokenObj);
+        }
 
         // open the home twig
- return $this->render('default/home.html.twig', [
-    'url' => $authUrl,
-]);
-}    
+        return $this->render('default/home.html.twig', [
+            'url' => $authUrl,
+        ]);
+    }    
 }

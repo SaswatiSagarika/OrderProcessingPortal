@@ -37,7 +37,7 @@ class ApiTestController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            //getting the form data
             $verb = $form["verb"]->getData();
             $url = $form["url"]->getData();
             $content = $form["content"]->getData();

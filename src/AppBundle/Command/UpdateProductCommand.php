@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateProductCommand extends ContainerAwareCommand
 {
     /**
-     * Function to set the name, description and argument for the upload:csv-file command.
+     * Function to set the name, description and argument for the upload:product command.
      */
     protected function configure()
     {

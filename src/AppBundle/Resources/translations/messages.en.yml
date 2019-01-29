@@ -1,10 +1,31 @@
 
 # /**.
 #  * messages for error and success 
+#  *
 #  * @author Saswati
 #  *
 #  * @category messages.en.yml
-#  */
+#  */#MyBundle\Resources\translations\messages.en.yml
+# 
+api.missing_parameters: 'Some parameters are missing. Please provide the required parameter.'
+api.missing_username: 'Please provide the username.'
+api.missing_phone: 'Please provide the phone parameter.'
+api.missing_otp: 'Please provide the otp parameter.'
+api.valid_user: 'User not found. Please try again.'
+api.valid_phone: 'Phone number not found. Please try again.'
+api.token: 'Missing parameter token.'
+api.activation_key: 'Missing parameter ''activation key!'''
+api.dummy: 'Missing parameter ''dummy!'''
+api.invalid_token: 'Token parameter is not valid!'
+api.invalid_method: 'Method parameter is not valid!'
+api.empty: 'Couldn''t get reocrds for the given filters!'
+api.otp_success: 'otp send successfully.'
+api.invalid_otp: 'otp is invalid. It should be a six digit number.'
+api.otp_verified: 'otp matched. Please proceed.'
+api.csv_uploaded: 'csv uploaded successfully'
+api.invalid_json: 'Invalid JSON'
+api.invalid_content_type: 'Invalid Content type'
+api.invalid_authorization: 'Invalid Authorization.'
 token: Missing parameter token.
 activation_key: Missing parameter 'activation key!'
 dummy: Missing parameter 'dummy!'

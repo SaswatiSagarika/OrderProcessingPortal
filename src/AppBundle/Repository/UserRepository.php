@@ -17,7 +17,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 	/**
     * 
     * check login
-    * It is used to fetch product data from database on given filters.
+    * It is used to check user data in database
     *
     * @param array $data array of coloum name and its values
     * @return array $result containing required data.
@@ -27,8 +27,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         
         $query = $this->createQueryBuilder('u')
                     ->select('u.id')
-                    ->addSelect('u.email as email')
-                    ->addSelect('cc.name as currency')
+                    ->addSelect('u.email as email')]
                     ->leftJoin('AppBundle:Status', 's', 'WITH', 'u.status = s.id')
                     ->Where('u.email = :email')
                     ->setParameter('email',$value['email'])

@@ -49,7 +49,7 @@ class AuthController extends FOSRestController
      *       "dataType"="Json",
      *       "required"="true",
      *       "description"="Json with name or category",
-     *       "format"="{""name"":""sprinkler"",""category"":""building""}"
+     *       "format"="{""name"":""demo"",""last"":""demo",""email"":""demo@gmail.com",""passsword"":""demo""}"
      *
      *   }},
      *  statusCodes={
@@ -198,7 +198,7 @@ class AuthController extends FOSRestController
     */
     public function verifyOtpAction(Request $request)
     {
-        try { print_r($request->getContent(), true);
+        try { 
             $data = json_decode($request->getContent(), true);
 
             if (!$data) {
@@ -214,7 +214,7 @@ class AuthController extends FOSRestController
             }
             $em = $this->getDoctrine()->getManager();
             
-            //verify the otp send.
+            //verify the otp sent.
             $otpVerification = $em->getRepository('MainBundle:User')->verifyOtp($userData);
 
             if (!$otpVerification) {

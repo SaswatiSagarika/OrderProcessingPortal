@@ -65,8 +65,8 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
 
     /**
     * 
-    * get products
-    * It is used to fetch product data from database on given filters.
+    * get vendor Details related to the products
+    * It is used to fetch vendor data from database on given filters.
     *
     * @param array $data array of coloum name and its values
     * @return array $result containing required data.

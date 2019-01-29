@@ -94,7 +94,7 @@ class OrderController extends FOSRestController
     }
 
     /**
-     ** REST action which returns get the data to Product.
+     ** REST action which returns get the data to Order.
      *
      * @Get("/api/orderHistory")
      * @View(statusCode=200)
@@ -159,72 +159,4 @@ class OrderController extends FOSRestController
         return new JsonResponse($orderResultArray);
     }
 
-    /**
-     ** REST action which returns get the data to Product.
-     *
-     * @Get("/api/orderDetails")
-     * @View(statusCode=200)
-     *
-     * @(
-     *   resource =false,
-     *   description = "API to get the data to Product",
-     * requirements={
-     *      {
-     *          "name"="_format",
-     *          "dataType"="string",
-     *          "description"="Response format"
-     *      },
-     *      {
-     *          "name"="_locale",
-     *          "requirement"="en|my"
-     *      }
-     *  },
-     *  parameters={{
-     *       "name"="csndk",
-     *       "dataType"="Json",
-     *       "required"="true",
-     *       "description"="Json with name or category",
-     *       "format"="{""orderID"":""5678987990798"",""customer"":""Amy's""}"}"
-     *
-     *   }},
-     *  statusCodes={
-     *         200="Returned when successful",
-     *         401="Returned when not authorized",
-     *  }
-     *)
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function getOrderDetailsAction(Request $request)
-    {
-        try {
-            $requestContent = json_decode($request->getContent(), true);
-            // if content is not provided.
-            $translator =  $this->get('translator');
-
-            $orderService = $this->get('app.service.order');
-            $validateService = $this->get('app.service.validate_data');
-            
-            if (!$requestContent['Line']|| !$requestContent['TotalAmt']) {
-                throw new NotFoundHttpException($translator->trans('api.invalid_data'));
-            }
-
-            // checking the params the account details provided
-            $orderDetails = $validateService->checkDetails($requestContent);
-            if (false === $orderDetails['status']) {
-                throw new NotFoundHttpException($translator->trans($orderDetails['message']));
-            }
-            $orderResultArray = $orderService->getOrderItemDetails($orderDetails);
-            if (false === $orderResultArray['status']) {
-                throw new NotFoundHttpException($translator->trans($orderResultArray['message']));
-            }
-            
-        } catch (Exception $e) {
-            $orderResultArray['error'] = $e->getMessage();
-        }
-        
-        return new JsonResponse($orderResultArray);
-    }
-    
 }

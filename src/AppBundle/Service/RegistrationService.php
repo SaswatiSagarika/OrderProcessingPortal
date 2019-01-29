@@ -91,7 +91,6 @@ class RegistrationService
         try {
             $returnData['status'] = false;
             $login       = $this->doctrine->getRepository('AppBundle:User')->loginDetails($param);
-print_r($login);exit();
             if (!$login) {
                 $returnData['message'] = 'missing_login';
                 return $returnData;

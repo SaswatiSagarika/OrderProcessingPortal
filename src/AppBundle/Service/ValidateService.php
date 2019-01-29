@@ -41,8 +41,6 @@ class ValidateService
         $this->doctrine = $doctrine;
         $this->translator = $translator;
     }
-
-
     
     /**
      * function to sanitize the data
@@ -59,6 +57,7 @@ class ValidateService
         }
         return $returnArr;
     }
+
     /**
      * function to validate the data
      *
@@ -148,9 +147,7 @@ class ValidateService
 
             
             if (!$account && 'Accounts Payable' !== $account->getAccountType()) {
-               $message = 'api.invalid_account';
-                throw new Exception($message);
-                
+                throw new Exception('api.invalid_account');
             }
 
             $returnData[$status] = true;
@@ -179,8 +176,7 @@ class ValidateService
                         'customer' => $param['value'] ));
             //checking if customer present or not
             if (!($customer)) {
-               $message= 'api.invalid_customer';
-               throw new Exception($message);
+               throw new Exception('api.invalid_customer');
                
             }
             $returnData['status'] = true;
@@ -209,8 +205,7 @@ class ValidateService
             $vendor = $this->doctrine->getRepository('AppBundle:Vendor')->findOneBy(array(
                         'vendor' => $param['value'] ));
             if (!isset($vendor)) {
-               $message= 'api.invalid_vendor';
-               throw new Exception($message);
+               throw new Exception('api.invalid_vendor');
                
             }
             $returnData['status'] = true;

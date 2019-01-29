@@ -13,7 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class UserType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * API form builder.
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -25,18 +28,12 @@ class UserType extends AbstractType
                     'first_options'  => ['label' => 'Password '],
                     'second_options' => ['label' => 'Repeat Password '],
                 ]);
-    }/**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
-        ));
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the name of this type.
+     *
+     * @return string
      */
     public function getBlockPrefix()
     {

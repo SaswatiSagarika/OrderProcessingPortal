@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Form for Login functions.
+ *
+ * @author Saswati
+ *
+ * @category FormType
+ */
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -12,20 +18,25 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class LoginFormType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * API form builder.
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', EmailType::class)
                 ->add('password', PasswordType::class);
     }
-
+    
     /**
-     * {@inheritdoc}
+     * Returns the name of this type.
+     *
+     * @return string
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_user';
+        return 'app_user';
     }
 
 

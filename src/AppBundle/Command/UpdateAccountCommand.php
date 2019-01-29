@@ -20,8 +20,8 @@ class UpdateAccountCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-        ->setName('upload:accounts')
-        ->setDescription('create new accounts in users table')
+            ->setName('upload:accounts')
+            ->setDescription('create new accounts in users table')
         ;
     }
     /**
