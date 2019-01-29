@@ -200,6 +200,7 @@ class Classification
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
+        $this->lastUpdatedTime = new \DateTime();
     }
     /**
      * @ORM\PreUpdate

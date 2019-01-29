@@ -50,27 +50,29 @@ class RegistrationService
             $returnData['status'] = false;
 
             $em = $this->doctrine->getEntityManager();
-            $inactive = $em->getRepository('AppBundle:Status')->findOneBy(array(
-                    'name' => 'INACTIVE'
+            $active = $em->getRepository('AppBundle:Status')->findOneBy(array(
+                    'name' => 'ACTIVE'
                 ));
 
             $param['otp'] = rand(100000,999999);
+
+            //create new user in db
             $user = new User();
             $user->setName($param['name'])
                  ->setEmail($param['email'])
                  ->setLast($param['last'])
-                 ->setIsVerified(0)
+                 ->setIsVerified(1)
                  ->setPassword($param['password'])
                  ->setOtp($param['otp'])
                  ->setRole('user')
-                 ->setStatus($inactive)
+                 ->setStatus($active)
                  ->setEmployeeID(time());
 
             $em->persist($user);
             $em->flush();
-            $mail = $this->mailer->sendOtpToEmail($param);
-            if (false === $mail['status']) {
-                $returnData['message'] = $mail['errorMessage'];
+            $sendMail = $this->mailer->sendOtpToEmail($param);
+            if (false === $sendMail['status']) {
+                $returnData['message'] = $sendMail['errorMessage'];
                 return $returnData;
             }
             $returnData['status'] = true;

@@ -35,11 +35,10 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
-        // 1) build the form
+        // build the form
         $form = $this->createForm(UserType::class);
-        $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->getCustomerDetail();
         
-        // 2) handle the submit (will only happen on POST)
+        // handle the submit
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //initalizing form data
@@ -49,7 +48,7 @@ class UserController extends Controller
             $param['email'] = $form['email']->getData();
             $param['name'] = $form['name']->getData();
             $param['last'] = $form['last']->getData();
-            //calling registr api     
+            //calling register     
             $response = $this->container
                 ->get('app.service.registration')
                 ->registerUserResponse($param)
@@ -59,17 +58,12 @@ class UserController extends Controller
                 $session->set('authenticated', true);
             }
             return $this->redirect($this->generateUrl('homepage'));
-            // return $this->render(
-            //     'user/otp.html.twig',
-            //     ['user' => $param,
-            //      'response' => $response
-            // ]);
+            
         }
 
         return $this->render(
             'user/register.html.twig',
-            ['form' => $form->createView(),
-            'customer' => $customer]
+            ['form' => $form->createView()]
         );
     }
 
@@ -96,10 +90,7 @@ class UserController extends Controller
              $param['password'] = hash_hmac('sha1',$form['password']->getData(), 
                 $this->container->getParameter('hash_signature_key'))
             ;
-            
-            // $response = $this->forward('AppBundle\Controller\AuthController::loginAction', [
-            //     'param'  =>  $param,
-            // ]);
+            // sending data to login function
             $response = $this->container
                 ->get('app.service.registration')
                 ->loginResponse($param)

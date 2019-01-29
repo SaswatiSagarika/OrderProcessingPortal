@@ -11,7 +11,7 @@
             Select Customer
           </button>
 
-          <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1">
+          <ul class="dropdown-menu scrollable-menu cust" aria-labelledby="dropdownMenu1">
             {% for cust in customer %}
               <li><a href="{{ path('orderlist', {'customer': cust.name})}}" data-value="action" id="{{cust.value}}">{{cust.name}}</a></li>
             {% endfor %}

@@ -92,6 +92,7 @@ class ValidateService
     {
        try {
             $returnData['status'] = false;
+            //check accuont details
             if (!empty($param['APAccountRef'])) {
                 $returnData['APAccountRef'] = $this->validateAccountDetails($param['APAccountRef']);
                 
@@ -99,10 +100,12 @@ class ValidateService
                    throw new NotFoundHttpException($returnData['APAccountRef']['error']);
                 }
             }
+            //check product details
             $returnData['Line'] = $this->validateProductDetails($param['Line']);
             if (false === $returnData['Line']['status']) {
                 throw new Exception($returnData['Line']['error']);
             }
+             //check if the vendor Ref if given
             if ($param['CustomerRef']) {
                 $returnData['CustomerRef'] = $this->validateCustomerDetails($param['CustomerRef']);
             
@@ -110,7 +113,7 @@ class ValidateService
                     throw new Exception($returnData['CustomerRef']['error']);
                 }
             }
-            //check if the vendor Ref i given
+            //check if the vendor Ref if given
             if ($param['VendorRef']) {
                 //validate the vendor
                 $returnData['VendorRef'] = $this->validateVendorDetails($param['VendorRef']);
@@ -141,7 +144,7 @@ class ValidateService
             
             //santizing the data
             $returnData = $this->sanitarize($param);
-            
+            //check if account detail present in db
             $account = $this->doctrine->getRepository('AppBundle:Account')->findOneBy(
                 array('accountId' => $param['value'] ));
 
@@ -202,6 +205,7 @@ class ValidateService
             //santizing the data
             $returnData = $this->sanitarize($param);
             
+            //check if Vendor detail present in db
             $vendor = $this->doctrine->getRepository('AppBundle:Vendor')->findOneBy(array(
                         'vendor' => $param['value'] ));
             if (!isset($vendor)) {

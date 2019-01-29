@@ -80,37 +80,6 @@ class DefaultDataService
     }
 
     /**
-     * Function to set new po in quickbooks
-     *
-     * @param string $table  
-     *
-     * @return array
-     **/
-    public function createPurchaseOrder($param)
-    {
-        try {
-            $returnData['status'] = false;
-            $dataService = $this->getDataService();
-            $invoiceToCreate = PurchaseOrder::Create($param);
-            $resultObj = $dataService->Add($invoiceToCreate);
-
-            $error = $dataService->getLastError();
-            if ($error) {
-                $returnData['statusCode'] = $error->getHttpStatusCode();
-                $returnData['helperMessage'] = $error->getOAuthHelperError();
-                $returnData['responseMessage'] = $error->getResponseBody();
-            }
-            $returnData['status'] = true; 
-            $returnData['message'] = $resultObj;
-        }
-        catch (\Exception $e) {
-            $returnData['errorMessage'] = $e->getMessage();
-        }
-        return $returnData;
-        
-    }
-
-    /**
      * Function to get datacount from quickbooks based on table name
      *
      * @param string $table  
@@ -244,27 +213,18 @@ class DefaultDataService
             if(!isset($count)){
                 
                 $refreshAccessToken   = $this->refreshOauthtoken();
-                //getting the dataservice again
+                
                 if (false === $refreshAccessToken['status']) {
                     
                     return $refreshAccessToken;
                 }
-
+                //getting the dataservice again
                 $dataService = $this->getDataService();
             }
         }
         catch (\Exception $e) {
             
             $returnData['errorMessage'] = $e->getMessage();
-            
-            //if accesstoken is expired
-            $refreshAccessToken   = $this->refreshOauthtoken();
-            //getting the dataservice again
-            if (false === $refreshAccessToken['status']) {
-                return $refreshAccessToken;
-            }
-
-            $dataService = $this->getDataService();
         }
         
         return $dataService;

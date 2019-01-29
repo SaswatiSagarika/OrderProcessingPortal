@@ -78,10 +78,10 @@ class MailerService
     public function sendMailToVendor($toEmail, $Qty)
     {
         try {
-             $body = 'Hi  '.$toEmail[0]['vendor'].', <br/> '
+            $body = 'Hi  '.$toEmail[0]['vendor'].', <br/> '
              .$toEmail[0]['email'].' <br/> <br/>There is a order for <b>'.$toEmail[0]['name'].'</b> Item. 
         Can you please send a confirmation mail whether your company can provide '.$Qty.' number of <b>'.$toEmail[0]['name'].' to us</b>.<br/><br/>Thanks, <br/>Quickbooks Corp.';
-       
+            //mailer instance
             $message = \Swift_Message::newInstance() 
                       ->setSubject('Conform availablity of items') 
                       ->setFrom($this->emailTo) 
@@ -108,14 +108,15 @@ class MailerService
     {
         try {
             $returnData['status'] = false;
-             $body = 'Hi  '.$param['name'].', <br/> <br/> <br/></b>Your one-time password to verify your account is ' . $param['otp'].'.<br/><br/>Thanks, <br/>Quickbooks Corp.';
-       
+
+            $body = 'Hi  '.$param['name'].', <br/> <br/> <br/></b>Your one-time password to verify your account is ' . $param['otp'].'.<br/><br/>Thanks, <br/>Quickbooks Corp.';
+            //mailer instance
             $message = \Swift_Message::newInstance() 
                       ->setSubject('Verification of account') 
                       ->setFrom($this->emailTo) 
                       ->setTo('saswati.sagarika@mindfiresolutions.com') 
                       ->setBody($body, 'text/html');
-                      
+            //send mail to email
             $this->mailer->send($message); 
             $returnData['status'] = true;
        } catch (\Exception $e) {

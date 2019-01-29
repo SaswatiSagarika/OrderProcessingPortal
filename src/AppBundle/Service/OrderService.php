@@ -72,18 +72,21 @@ class OrderService
                     ->setTotalAmt($param['TotalAmt'])
                     ->setPoStatus('New')
                     ->setNotes($param['Memo']?$param['Memo']:'');
-            
+            //check if account is given
             if($param['APAccountRef']) {
                 $account = $this->doctrine->getRepository('AppBundle:Account')->findOneBy(array(
                             'accountId' => $param['APAccountRef']['value'] ));
 
                 $orderRef->setAccount($account);
             }
-
+            //check if customer is given
             $customer = $this->doctrine->getRepository('AppBundle:Customer')->findOneBy(array('customer' => $param['CustomerRef']['value']));
-
-            $term = $this->doctrine->getRepository('AppBundle:Term')->find(1);
-
+            //check if term is given
+            if(!$param['TermRef']) {
+               $term = 'Due on receipt';
+  
+            }
+           $ $term = $this->doctrine->getRepository('AppBundle:Term')->findOneBy(array('name' => $ $term));
             $orderRef->setCustomer($customer)
                 ->setDueDate(new \DateTime('now'))
                 ->setSalesTerm($term);
@@ -94,7 +97,6 @@ class OrderService
             $currecny = $this->doctrine->getRepository('AppBundle:CompanyCurrency')->findOneBy(array('name' => $currency));
             $orderRef->setCurrency($currecny);
             //create the PO Item records
-
             $this->createOrderItems($param['Line'], $orderRef);
             
             $createRecord = $this->dataService->createInvoice($param);
@@ -109,8 +111,12 @@ class OrderService
             $em->persist($orderRef);
 
             $em->flush();
-
-            $this->mailer->mailToVendor($param['Line']);
+            //send mail to vendor
+            $sendMail = $this->mailer->mailToVendor($param['Line']);
+            if (false === $sendMail['status']) {
+                $returnData['message'] = $sendMail['errorMessage'];
+                return $returnData;
+            }
             $returnData['orderID'] = $orderId;
             $returnData['originalAmount'] = $param['TotalAmt'];
             $returnData['quickbooksId'] = $quick_id;
@@ -184,13 +190,13 @@ class OrderService
 
                 //the orderDetails
                 $orderDetails['poId']              = $order['poId'];
-                $orderDetails['customer']             = $order['customer'];
-                $orderDetails['account']      = $order['account'];
-                $orderDetails['salesTerm']            = $order['salesTerm'];
+                $orderDetails['customer']          = $order['customer'];
+                $orderDetails['account']           = $order['account'];
+                $orderDetails['salesTerm']         = $order['salesTerm'];
                 $orderDetails['totalAmt']          = $order['totalAmt'] ;
-                $orderDetails['notes']       = $order['notes'];
-                $orderDetails['dueDate'] = $order['dueDate'];
-                $orderDetails['currency']             = $order['currency'];
+                $orderDetails['notes']             = $order['notes'];
+                $orderDetails['dueDate']           = $order['dueDate'];
+                $orderDetails['currency']          = $order['currency'];
                 
                 $resultArray['order'][$i] = $orderDetails;
                 $i++;

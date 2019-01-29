@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Form for Register functions.
+ *
+ * @author Saswati
+ *
+ * @category FormType
+ */
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;

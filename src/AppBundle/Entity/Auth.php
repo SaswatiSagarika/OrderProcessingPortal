@@ -198,7 +198,7 @@ class Auth
     public function onPrePersist()
     {
         $this->createdDate = new \DateTime();
-        
+        $this->setLastUpdatedTime = new \DateTime();       
         
     }
     /**
@@ -206,7 +206,7 @@ class Auth
      */
     public function onPreUpdate()
     {
-        $this->lastUpdateTime = new \DateTime();
+        $this->setLastUpdatedTime = new \DateTime();
     }
     
     /**
